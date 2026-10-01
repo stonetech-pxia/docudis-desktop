@@ -214,7 +214,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restoreHint =>
-      'Paste the AI\'s reply. Labels are swapped back using the key stored on this phone.';
+      'Paste the AI\'s reply. Labels are swapped back using the key stored on this computer.';
 
   @override
   String get entityPerson => 'Name';
@@ -306,7 +306,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get restoreKeyTitle => 'Restore key kept on this phone';
+  String get restoreKeyTitle => 'Restore key kept on this computer';
 
   @override
   String restoreKeySubtitle(int count) {
@@ -396,7 +396,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeHeadline => 'Protect your personal data by anonymizing it.';
 
   @override
-  String get homeCaption => 'Runs entirely on this phone. Nothing is uploaded.';
+  String get homeCaption =>
+      'Runs entirely on this computer. Nothing is uploaded.';
 
   @override
   String get anonymizeButton => 'Anonymize';
@@ -445,7 +446,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dictionaryHint =>
-      'Type what should be hidden in every document, such as your own name, company or address. The list stays on this phone, and you can still show an item again in one document.';
+      'Type what should be hidden in every document, such as your own name, company or address. The list stays on this computer, and you can still show an item again in one document.';
 
   @override
   String get dictionaryEmpty =>
@@ -677,4 +678,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showInFolder => 'Show in folder';
+
+  @override
+  String get navDictionary => 'Dictionary';
+
+  @override
+  String blockDocuments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count documents',
+      one: 'in 1 document',
+    );
+    return '$_temp0';
+  }
 }

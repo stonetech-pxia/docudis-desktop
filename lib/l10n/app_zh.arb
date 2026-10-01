@@ -227,5 +227,8 @@
   "settingsData": "数据",
   "settingsAbout": "关于",
   "dataLocation": "记录保存在",
-  "showInFolder": "在文件夹中显示"
+  "showInFolder": "在文件夹中显示",
+
+  "navDictionary": "词典",
+  "blockDocuments": "{count, plural, other{出现在 {count} 份文档}}"
 }

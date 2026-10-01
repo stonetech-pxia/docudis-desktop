@@ -3,12 +3,14 @@
 //
 //   flutter test integration_test/flow_test.dart -d macos
 //
-// Records go to a temporary folder, not the app's own.
+// Records and the dictionary lists go to a temporary folder, not the
+// app's own.
 
 import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:docudis/anonymize/input/input_source.dart';
+import 'package:docudis_ffi/docudis_ffi.dart' show EntityType;
 import 'package:docudis/anonymize/output/docx_redaction.dart';
 import 'package:docudis/anonymize/providers.dart';
 import 'package:docudis/anonymize/storage/record_store.dart';
@@ -16,7 +18,7 @@ import 'package:docudis/anonymize/ui/findings_panel.dart';
 import 'package:docudis/app.dart';
 import 'package:docudis/preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' hide TextInput;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -37,6 +39,7 @@ Future<ProviderContainer> _pumpApp(WidgetTester tester) async {
         await SharedPreferences.getInstance(),
       ),
       recordStoreProvider.overrideWithValue(RecordStore(root: _records)),
+      appSupportDirectoryProvider.overrideWith((ref) async => _records),
     ],
   );
   addTearDown(container.dispose);
@@ -122,6 +125,54 @@ void main() {
       'Dear [PERSON_1], I will call [PHONE_1] tomorrow.',
     );
     await _waitFor(tester, find.textContaining('Dear Sarah Meyer'));
+  });
+
+  testWidgets('the dictionary lists change what is hidden', (tester) async {
+    final container = await _pumpApp(tester);
+    final service = container.read(anonymizeServiceProvider);
+    Future<String> run() async {
+      final record = await service.process(const TextInput(_pasted));
+      return (await container.read(recordStoreProvider).load(record.id)).output;
+    }
+
+    // Hide only this list: the listed word, nothing else.
+    await container.read(dictionaryProvider.notifier).add('Lyon');
+    await container.read(listOnlyProvider.notifier).set(true);
+    var output = await run();
+    expect(output, isNot(contains('Lyon')));
+    expect(output, contains('Sarah Meyer'));
+    expect(output, contains('sarah.meyer@example.fr'));
+
+    // Never hide: back to everything, but Lyon stays readable.
+    await container.read(listOnlyProvider.notifier).set(false);
+    await container.read(dictionaryProvider.notifier).remove('Lyon');
+    await container.read(neverHideProvider.notifier).add('Lyon');
+    output = await run();
+    expect(output, contains('Lyon'));
+    expect(output, isNot(contains('Sarah Meyer')));
+
+    // Text hidden by hand comes back as a suggestion for Always hide.
+    container.invalidate(recordsProvider);
+    final records = await container.read(recordsProvider.future);
+    final detail = await container
+        .read(recordStoreProvider)
+        .load(records.first.id);
+    final start = detail.original.indexOf('IBAN');
+    await container.read(reviewControllerProvider.notifier).apply(
+      detail.record.id,
+      [
+        ...detail.detections,
+        service.manualDetection(
+          detail.original,
+          start,
+          start + 4,
+          EntityType.custom,
+        ),
+      ],
+    );
+    container.invalidate(recordsProvider);
+    final suggested = await container.read(manualBlocksProvider.future);
+    expect(suggested.map((b) => b.value), contains('IBAN'));
   });
 
   testWidgets('a PDF and a Word file come back redacted', (tester) async {

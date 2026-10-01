@@ -289,7 +289,12 @@ class _WorkspacePageState extends ConsumerState<WorkspacePage> {
 
     final findings = loaded == null
         ? null
-        : FindingsPanel(detections: detections, onChanged: toggle);
+        : FindingsPanel(
+            detections: detections,
+            onChanged: toggle,
+            onAlwaysHide: ref.read(dictionaryProvider.notifier).add,
+            onNeverHide: ref.read(neverHideProvider.notifier).add,
+          );
 
     final shortcuts = <ShortcutActivator, VoidCallback>{
       for (final meta in [true, false]) ...{

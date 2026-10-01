@@ -21,6 +21,7 @@ class AnonymizeService {
     required this.extractor,
     required this.dictionaryTerms,
     required this.neverHideTerms,
+    required this.listOnly,
   });
 
   final RecordStore store;
@@ -31,6 +32,9 @@ class AnonymizeService {
 
   /// Current never-hide list; read at each run.
   final Future<List<String>> Function() neverHideTerms;
+
+  /// "Hide only this list"; read at each run.
+  final bool Function() listOnly;
 
   Future<NerModel?>? _ner;
 
@@ -58,19 +62,19 @@ class AnonymizeService {
     final extraction = await extractor.extract(source);
     final original = extraction.text;
     _log('extracted ${original.length} chars', sw);
-    final ner = await nerModel();
+    final dictionary = await dictionaryTerms();
+    // "Hide only this list": the list alone. An empty list never counts, it
+    // would hide nothing.
+    final listOnly = this.listOnly() && dictionary.isNotEmpty;
+    final ner = listOnly ? null : await nerModel();
     final modelDetections = ner == null
         ? const <Detection>[]
         : await ner.detect(original);
     _log('model found ${modelDetections.length} spans', sw);
-    final dictionary = await dictionaryTerms();
     final neverHide = await neverHideTerms();
-    final (:detections, :result) = await _detect(
-      original,
-      modelDetections,
-      dictionary,
-      neverHide,
-    );
+    final (:detections, :result) = listOnly
+        ? await _listOnly(original, dictionary)
+        : await _detect(original, modelDetections, dictionary, neverHide);
     _log('detection done (${detections.length} spans)', sw);
     final document = extraction.document;
     final redactedDocument = document == null
@@ -99,7 +103,8 @@ class AnonymizeService {
       detectionCount: detections.where((d) => d.enabled).length,
       preview: _preview(result.text),
       title: source is FileInput ? null : titleFromText(original),
-      modelUsed: ner != null,
+      listOnly: listOnly,
+      modelUsed: listOnly || ner != null,
     );
     await store.save(
       record: record,
@@ -135,6 +140,42 @@ class AnonymizeService {
       neverHide: neverHide,
       includeBundledLists: true,
       detections: modelDetections,
+    );
+  });
+
+  /// Only the dictionary terms: no rule pack (an empty category selection
+  /// leaves out even the universal one), no bundled lists, no model.
+  static Future<({List<Detection> detections, AnonymizedText result})>
+  _listOnly(String text, List<String> dictionary) => Isolate.run(() {
+    final response = core.native.process({
+      'text': text,
+      'regions': <String>[],
+      'selection': {'categories': <String>[]},
+      'dictionary': dictionary,
+      'never_hide': <String>[],
+      'include_bundled_lists': false,
+      'detections': <Object?>[],
+    });
+    List<Map<String, Object?>> rows(String key) => [
+      for (final row in response[key]! as List<Object?>)
+        (row! as Map).cast<String, Object?>(),
+    ];
+    return (
+      detections: [for (final d in rows('detections')) Detection.fromJson(d)],
+      result: AnonymizedText(
+        text: response['text']! as String,
+        map: PlaceholderMap([
+          for (final e in rows('mappings')) MappingEntry.fromJson(e),
+        ]),
+        replacements: [
+          for (final r in rows('replacements'))
+            (
+              start: r['start']! as int,
+              end: r['end']! as int,
+              placeholder: r['placeholder']! as String,
+            ),
+        ],
+      ),
     );
   });
 

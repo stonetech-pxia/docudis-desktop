@@ -70,7 +70,7 @@
   "deleteAllConfirm": "Supprimer tout l'historique ? Cette action est irréversible.",
   "cancel": "Annuler",
   "restoreTitle": "Restaurer",
-  "restoreHint": "Collez la réponse de l'IA. Les étiquettes sont remplacées par les vraies valeurs grâce à la clé conservée sur ce téléphone.",
+  "restoreHint": "Collez la réponse de l'IA. Les étiquettes sont remplacées par les vraies valeurs grâce à la clé conservée sur cet ordinateur.",
   "entityPerson": "Nom",
   "entityEmail": "E-mail",
   "entityPhone": "Téléphone",
@@ -97,7 +97,7 @@
   "reviewNote": "Remplacés par des étiquettes comme [PERSON_1] pour que les réponses de l'IA restent cohérentes.",
   "done": "Terminé",
   "resultBanner": "{count, plural, =0{Rien à remplacer.} =1{1 élément remplacé.} other{{count} éléments remplacés.}}",
-  "restoreKeyTitle": "Clé de restauration conservée sur ce téléphone",
+  "restoreKeyTitle": "Clé de restauration conservée sur cet ordinateur",
   "restoreKeySubtitle": "{count, plural, =1{1 paire · jamais envoyée · supprimable à tout moment} other{{count} paires · jamais envoyées · supprimables à tout moment}}",
   "copyText": "Copier le texte",
   "sendTo": "Envoyer à {app}",
@@ -146,7 +146,7 @@
   "clipboardEmpty": "Le presse-papiers ne contient pas de texte.",
   "confirm": "Confirmer",
   "homeHeadline": "Protégez vos données personnelles en les anonymisant.",
-  "homeCaption": "Tout se passe sur ce téléphone. Rien n'est envoyé.",
+  "homeCaption": "Tout se passe sur cet ordinateur. Rien n'est envoyé.",
   "anonymizeButton": "Anonymiser",
   "sendToLabel": "Envoyer à",
   "otherApps": "Autres",
@@ -161,7 +161,7 @@
   "languageTitle": "Langue",
   "languageSystem": "Langue du système",
   "dictionaryTitle": "Toujours masquer",
-  "dictionaryHint": "Saisissez ce qui doit être masqué dans chaque document, comme votre nom, votre société ou votre adresse. La liste reste sur ce téléphone, et vous pouvez toujours réafficher un élément dans un document.",
+  "dictionaryHint": "Saisissez ce qui doit être masqué dans chaque document, comme votre nom, votre société ou votre adresse. La liste reste sur cet ordinateur, et vous pouvez toujours réafficher un élément dans un document.",
   "dictionaryEmpty": "Rien pour l'instant. Le texte que vous masquez à la main sera proposé ici.",
   "dictionaryWords": "{count, plural, =0{Aucun mot pour l'instant} =1{1 mot} other{{count} mots}}",
   "dictionarySuggestions": "{count, plural, =1{1 suggestion} other{{count} suggestions}}",
@@ -227,5 +227,8 @@
   "settingsData": "Données",
   "settingsAbout": "À propos",
   "dataLocation": "Les enregistrements sont gardés dans",
-  "showInFolder": "Afficher dans le dossier"
+  "showInFolder": "Afficher dans le dossier",
+
+  "navDictionary": "Dictionnaire",
+  "blockDocuments": "{count, plural, =1{dans 1 document} other{dans {count} documents}}"
 }

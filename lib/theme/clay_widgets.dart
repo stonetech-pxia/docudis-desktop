@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'clay_theme.dart';
 
-/// Page scaffold: 44px back button, centred Sora title, optional trailing
-/// actions, body, and an optional pinned bottom bar on a cream surface.
+/// Page scaffold for the desktop: a cream header bar with an optional back
+/// button, the title on the left and actions on the right, then the body,
+/// and an optional pinned bottom bar.
 class ClayPage extends StatelessWidget {
   const ClayPage({
     super.key,
@@ -24,42 +25,41 @@ class ClayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottom = this.bottom;
     return Scaffold(
-      body: SafeArea(
-        // Without a bottom bar the page's own end must clear the system
-        // navigation bar ("Restore with that document" sat under it).
-        bottom: bottom == null,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-              child: Row(
-                children: [
-                  if (showBack)
-                    ClayIconButton(
-                      icon: Icons.arrow_back_ios_new_rounded,
-                      onPressed: () => Navigator.of(context).maybePop(),
-                    )
-                  else
-                    const SizedBox(width: Clay.tapTarget),
-                  Expanded(
-                    child: Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Clay.heading(14, weight: FontWeight.w600),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          DecoratedBox(
+            decoration: const BoxDecoration(
+              color: Clay.surface,
+              border: Border(bottom: BorderSide(color: Clay.divider)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(showBack ? 4 : 16, 4, 8, 4),
+              child: SizedBox(
+                height: 34,
+                child: Row(
+                  children: [
+                    if (showBack)
+                      ClayIconButton(
+                        icon: Icons.arrow_back_rounded,
+                        onPressed: () => Navigator.of(context).maybePop(),
+                      ),
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Clay.heading(14, weight: FontWeight.w600),
+                      ),
                     ),
-                  ),
-                  if (actions.isEmpty)
-                    const SizedBox(width: Clay.tapTarget)
-                  else
                     ...actions,
-                ],
+                  ],
+                ),
               ),
             ),
-            Expanded(child: body),
-          ],
-        ),
+          ),
+          Expanded(child: body),
+        ],
       ),
       bottomNavigationBar: bottom == null ? null : ClayBottomBar(child: bottom),
     );
@@ -637,7 +637,7 @@ class _NavItem extends StatelessWidget {
 /// Desktop counterpart of [ClayNavBar]: a cream column on the left with the
 /// app name on top, one compact row per section (the active one on a
 /// terracotta tint), and an optional [footer] under them, such as recent
-/// documents.
+/// documents. [compact] narrows it to a rail of icons, for small windows.
 class ClaySideNav extends StatelessWidget {
   const ClaySideNav({
     super.key,
@@ -646,9 +646,13 @@ class ClaySideNav extends StatelessWidget {
     required this.onChanged,
     required this.items,
     this.footer,
+    this.compact = false,
   });
 
   static const width = 200.0;
+  static const compactWidth = 52.0;
+
+  final bool compact;
 
   final String title;
   final int index;
@@ -663,24 +667,35 @@ class ClaySideNav extends StatelessWidget {
       border: Border(right: BorderSide(color: Clay.divider)),
     ),
     child: SizedBox(
-      width: width,
+      width: compact ? compactWidth : width,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 14, 8, 8),
+        padding: EdgeInsets.fromLTRB(compact ? 6 : 8, 14, compact ? 6 : 8, 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 14),
-              child: Text(title, style: Clay.heading(15)),
+              padding: EdgeInsets.fromLTRB(
+                compact ? 0 : 10,
+                0,
+                compact ? 0 : 10,
+                14,
+              ),
+              child: Text(
+                compact ? title.characters.first : title,
+                textAlign: compact ? TextAlign.center : TextAlign.start,
+                style: Clay.heading(15),
+              ),
             ),
             for (var i = 0; i < items.length; i++)
               ClaySideNavRow(
                 icon: items[i].$1,
                 label: items[i].$2,
                 selected: i == index,
+                iconOnly: compact,
                 onTap: () => onChanged(i),
               ),
-            if (footer case final footer?) Expanded(child: footer),
+            if (footer case final footer? when !compact)
+              Expanded(child: footer),
           ],
         ),
       ),
@@ -697,7 +712,11 @@ class ClaySideNavRow extends StatelessWidget {
     required this.onTap,
     this.icon,
     this.selected = false,
+    this.iconOnly = false,
   });
+
+  /// Only the icon, the label as a tooltip: the compact rail.
+  final bool iconOnly;
 
   final IconData? icon;
   final String label;
@@ -723,30 +742,35 @@ class ClaySideNavRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
             hoverColor: Clay.bg,
             child: SizedBox(
-              height: 30,
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  if (icon != null) ...[
-                    Icon(icon, size: 17, color: color),
-                    const SizedBox(width: 9),
-                  ],
-                  Expanded(
-                    child: Text(
-                      label,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Clay.body(
-                        13,
-                        weight: icon == null
-                            ? FontWeight.w500
-                            : FontWeight.w700,
-                        color: color,
-                      ),
+              height: iconOnly ? 36 : 30,
+              child: iconOnly && icon != null
+                  ? Tooltip(
+                      message: label,
+                      child: Center(child: Icon(icon, size: 18, color: color)),
+                    )
+                  : Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        if (icon != null) ...[
+                          Icon(icon, size: 17, color: color),
+                          const SizedBox(width: 9),
+                        ],
+                        Expanded(
+                          child: Text(
+                            label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Clay.body(
+                              13,
+                              weight: icon == null
+                                  ? FontWeight.w500
+                                  : FontWeight.w700,
+                              color: color,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),

@@ -61,7 +61,7 @@
   "deleteAllConfirm": "¿Eliminar todo el historial? No se puede deshacer.",
   "cancel": "Cancelar",
   "restoreTitle": "Restaurar",
-  "restoreHint": "Pega la respuesta de la IA. Las etiquetas se sustituyen por los datos reales con la clave guardada en este teléfono.",
+  "restoreHint": "Pega la respuesta de la IA. Las etiquetas se sustituyen por los datos reales con la clave guardada en este ordenador.",
   "entityPerson": "Nombre",
   "entityEmail": "Correo electrónico",
   "entityPhone": "Teléfono",
@@ -88,7 +88,7 @@
   "reviewNote": "Se sustituye por etiquetas como [PERSON_1] para que las respuestas de la IA sigan teniendo sentido.",
   "done": "Hecho",
   "resultBanner": "{count, plural, =0{No había nada que sustituir.} =1{1 dato sustituido.} other{{count} datos sustituidos.}}",
-  "restoreKeyTitle": "Clave de restauración guardada en este teléfono",
+  "restoreKeyTitle": "Clave de restauración guardada en este ordenador",
   "restoreKeySubtitle": "{count, plural, =1{1 par · nunca se sube · bórrala cuando quieras} other{{count} pares · nunca se suben · bórralos cuando quieras}}",
   "copyText": "Copiar texto",
   "sendTo": "Enviar a {app}",
@@ -109,7 +109,7 @@
   "clipboardEmpty": "El portapapeles no tiene texto.",
   "confirm": "Confirmar",
   "homeHeadline": "Protege tus datos personales anonimizándolos.",
-  "homeCaption": "Todo se hace en este teléfono. No se sube nada.",
+  "homeCaption": "Todo se hace en este ordenador. No se sube nada.",
   "anonymizeButton": "Anonimizar",
   "sendToLabel": "Enviar a",
   "otherApps": "Otras",
@@ -124,7 +124,7 @@
   "languageTitle": "Idioma",
   "languageSystem": "Idioma del sistema",
   "dictionaryTitle": "Ocultar siempre",
-  "dictionaryHint": "Escribe lo que debe ocultarse en todos los documentos, como tu nombre, tu empresa o tu dirección. La lista se queda en este teléfono y puedes volver a mostrar un elemento en un documento concreto.",
+  "dictionaryHint": "Escribe lo que debe ocultarse en todos los documentos, como tu nombre, tu empresa o tu dirección. La lista se queda en este ordenador y puedes volver a mostrar un elemento en un documento concreto.",
   "dictionaryEmpty": "Nada todavía. Aquí se sugerirá el texto que ocultes a mano.",
   "dictionaryWords": "{count, plural, =0{Ninguna palabra} =1{1 palabra} other{{count} palabras}}",
   "dictionarySuggestions": "{count, plural, =1{1 sugerencia} other{{count} sugerencias}}",
@@ -190,5 +190,8 @@
   "settingsData": "Datos",
   "settingsAbout": "Acerca de",
   "dataLocation": "Los registros se guardan en",
-  "showInFolder": "Mostrar en la carpeta"
+  "showInFolder": "Mostrar en la carpeta",
+
+  "navDictionary": "Diccionario",
+  "blockDocuments": "{count, plural, =1{en 1 documento} other{en {count} documentos}}"
 }

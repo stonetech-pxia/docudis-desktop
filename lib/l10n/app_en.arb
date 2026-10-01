@@ -80,7 +80,7 @@
   "deleteAllConfirm": "Delete the whole history? This cannot be undone.",
   "cancel": "Cancel",
   "restoreTitle": "Restore",
-  "restoreHint": "Paste the AI's reply. Labels are swapped back using the key stored on this phone.",
+  "restoreHint": "Paste the AI's reply. Labels are swapped back using the key stored on this computer.",
   "entityPerson": "Name",
   "entityEmail": "Email",
   "entityPhone": "Phone",
@@ -107,7 +107,7 @@
   "reviewNote": "Replaced with labels like [PERSON_1] so AI answers still make sense.",
   "done": "Done",
   "resultBanner": "{count, plural, =0{Nothing needed replacing.} =1{1 item replaced.} other{{count} items replaced.}}",
-  "restoreKeyTitle": "Restore key kept on this phone",
+  "restoreKeyTitle": "Restore key kept on this computer",
   "restoreKeySubtitle": "{count, plural, =1{1 pair · never uploaded · delete anytime} other{{count} pairs · never uploaded · delete anytime}}",
   "copyText": "Copy text",
   "sendTo": "Send to {app}",
@@ -176,7 +176,7 @@
   "clipboardEmpty": "The clipboard has no text.",
   "confirm": "Confirm",
   "homeHeadline": "Protect your personal data by anonymizing it.",
-  "homeCaption": "Runs entirely on this phone. Nothing is uploaded.",
+  "homeCaption": "Runs entirely on this computer. Nothing is uploaded.",
   "anonymizeButton": "Anonymize",
   "sendToLabel": "Send to",
   "otherApps": "Other",
@@ -204,7 +204,7 @@
   "languageTitle": "Language",
   "languageSystem": "System default",
   "dictionaryTitle": "Always hide",
-  "dictionaryHint": "Type what should be hidden in every document, such as your own name, company or address. The list stays on this phone, and you can still show an item again in one document.",
+  "dictionaryHint": "Type what should be hidden in every document, such as your own name, company or address. The list stays on this computer, and you can still show an item again in one document.",
   "dictionaryEmpty": "Nothing yet. Text you hide by hand will be suggested here.",
   "dictionaryWords": "{count, plural, =0{No words yet} =1{1 word} other{{count} words}}",
   "@dictionaryWords": {
@@ -323,5 +323,9 @@
   "settingsData": "Data",
   "settingsAbout": "About",
   "dataLocation": "Records are kept in",
-  "showInFolder": "Show in folder"
+  "showInFolder": "Show in folder",
+
+  "navDictionary": "Dictionary",
+  "blockDocuments": "{count, plural, =1{in 1 document} other{in {count} documents}}",
+  "@blockDocuments": {"placeholders": {"count": {"type": "int"}}}
 }

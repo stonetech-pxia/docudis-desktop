@@ -471,7 +471,7 @@ abstract class AppLocalizations {
   /// No description provided for @restoreHint.
   ///
   /// In en, this message translates to:
-  /// **'Paste the AI\'s reply. Labels are swapped back using the key stored on this phone.'**
+  /// **'Paste the AI\'s reply. Labels are swapped back using the key stored on this computer.'**
   String get restoreHint;
 
   /// No description provided for @entityPerson.
@@ -633,7 +633,7 @@ abstract class AppLocalizations {
   /// No description provided for @restoreKeyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Restore key kept on this phone'**
+  /// **'Restore key kept on this computer'**
   String get restoreKeyTitle;
 
   /// No description provided for @restoreKeySubtitle.
@@ -759,7 +759,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeCaption.
   ///
   /// In en, this message translates to:
-  /// **'Runs entirely on this phone. Nothing is uploaded.'**
+  /// **'Runs entirely on this computer. Nothing is uploaded.'**
   String get homeCaption;
 
   /// No description provided for @anonymizeButton.
@@ -849,7 +849,7 @@ abstract class AppLocalizations {
   /// No description provided for @dictionaryHint.
   ///
   /// In en, this message translates to:
-  /// **'Type what should be hidden in every document, such as your own name, company or address. The list stays on this phone, and you can still show an item again in one document.'**
+  /// **'Type what should be hidden in every document, such as your own name, company or address. The list stays on this computer, and you can still show an item again in one document.'**
   String get dictionaryHint;
 
   /// No description provided for @dictionaryEmpty.
@@ -1229,6 +1229,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show in folder'**
   String get showInFolder;
+
+  /// No description provided for @navDictionary.
+  ///
+  /// In en, this message translates to:
+  /// **'Dictionary'**
+  String get navDictionary;
+
+  /// No description provided for @blockDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{in 1 document} other{in {count} documents}}'**
+  String blockDocuments(int count);
 }
 
 class _AppLocalizationsDelegate

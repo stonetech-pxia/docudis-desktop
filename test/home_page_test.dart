@@ -19,6 +19,7 @@ class _NoModelService extends AnonymizeService {
         extractor: TextExtractor(),
         dictionaryTerms: () async => const [],
         neverHideTerms: () async => const [],
+        listOnly: () => false,
       );
 
   @override
@@ -73,21 +74,26 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(shownTab(tester), 2);
-  });
-
-  testWidgets('narrow window falls back to the bottom bar', (tester) async {
-    await pumpApp(tester, const Size(480, 760));
-
-    expect(find.byType(ClayNavBar), findsOneWidget);
-    expect(find.byType(ClaySideNav), findsNothing);
+    expect(shownTab(tester), 3);
 
     await tester.tap(
       find.descendant(
-        of: find.byType(ClayNavBar),
-        matching: find.text('History'),
+        of: find.byType(ClaySideNav),
+        matching: find.text('Dictionary'),
       ),
     );
+    await tester.pumpAndSettle();
+    expect(shownTab(tester), 2);
+  });
+
+  testWidgets('narrow window narrows the side bar to icons', (tester) async {
+    await pumpApp(tester, const Size(760, 600));
+
+    final rail = tester.widget<ClaySideNav>(find.byType(ClaySideNav));
+    expect(rail.compact, isTrue);
+    expect(find.byType(ClayNavBar), findsNothing);
+
+    await tester.tap(find.byTooltip('History'));
     await tester.pumpAndSettle();
     expect(shownTab(tester), 1);
   });
@@ -102,10 +108,13 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    tester.view.physicalSize = const Size(480, 760);
+    tester.view.physicalSize = const Size(760, 600);
     await tester.pumpAndSettle();
 
-    expect(find.byType(ClayNavBar), findsOneWidget);
-    expect(shownTab(tester), 2);
+    expect(
+      tester.widget<ClaySideNav>(find.byType(ClaySideNav)).compact,
+      isTrue,
+    );
+    expect(shownTab(tester), 3);
   });
 }

@@ -654,4 +654,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get showInFolder => '在文件夹中显示';
+
+  @override
+  String get navDictionary => '词典';
+
+  @override
+  String blockDocuments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '出现在 $count 份文档',
+    );
+    return '$_temp0';
+  }
 }

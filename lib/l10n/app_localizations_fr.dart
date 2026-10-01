@@ -217,7 +217,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get restoreHint =>
-      'Collez la réponse de l\'IA. Les étiquettes sont remplacées par les vraies valeurs grâce à la clé conservée sur ce téléphone.';
+      'Collez la réponse de l\'IA. Les étiquettes sont remplacées par les vraies valeurs grâce à la clé conservée sur cet ordinateur.';
 
   @override
   String get entityPerson => 'Nom';
@@ -312,7 +312,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get restoreKeyTitle =>
-      'Clé de restauration conservée sur ce téléphone';
+      'Clé de restauration conservée sur cet ordinateur';
 
   @override
   String restoreKeySubtitle(int count) {
@@ -406,7 +406,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get homeCaption =>
-      'Tout se passe sur ce téléphone. Rien n\'est envoyé.';
+      'Tout se passe sur cet ordinateur. Rien n\'est envoyé.';
 
   @override
   String get anonymizeButton => 'Anonymiser';
@@ -455,7 +455,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dictionaryHint =>
-      'Saisissez ce qui doit être masqué dans chaque document, comme votre nom, votre société ou votre adresse. La liste reste sur ce téléphone, et vous pouvez toujours réafficher un élément dans un document.';
+      'Saisissez ce qui doit être masqué dans chaque document, comme votre nom, votre société ou votre adresse. La liste reste sur cet ordinateur, et vous pouvez toujours réafficher un élément dans un document.';
 
   @override
   String get dictionaryEmpty =>
@@ -688,4 +688,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get showInFolder => 'Afficher dans le dossier';
+
+  @override
+  String get navDictionary => 'Dictionnaire';
+
+  @override
+  String blockDocuments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'dans $count documents',
+      one: 'dans 1 document',
+    );
+    return '$_temp0';
+  }
 }

@@ -194,6 +194,34 @@ class RecordRow extends ConsumerWidget {
 
   final AnonymizationRecord record;
 
+  /// The row's menu, opened by a right click.
+  Future<void> _menu(BuildContext context, WidgetRef ref, Offset at) async {
+    final l10n = AppLocalizations.of(context);
+    final action = await showMenu<_RecordAction>(
+      context: context,
+      position: RelativeRect.fromLTRB(at.dx, at.dy, at.dx, at.dy),
+      items: [
+        PopupMenuItem(
+          height: 32,
+          value: _RecordAction.rename,
+          child: Text(l10n.rename),
+        ),
+        PopupMenuItem(
+          height: 32,
+          value: _RecordAction.delete,
+          child: Text(l10n.delete),
+        ),
+      ],
+    );
+    if (action == null || !context.mounted) return;
+    switch (action) {
+      case _RecordAction.rename:
+        await _rename(context, ref);
+      case _RecordAction.delete:
+        await _delete(context, ref);
+    }
+  }
+
   Future<void> _rename(BuildContext context, WidgetRef ref) async {
     final name = await showDialog<String>(
       context: context,
@@ -250,77 +278,86 @@ class RecordRow extends ConsumerWidget {
       InputKind.image => (Icons.image_outlined, Clay.tertiary, l10n.kindFile),
     };
     final cell = Clay.body(12.5, color: Clay.inkMuted);
-    return InkWell(
-      hoverColor: Clay.bg,
-      onTap: () => ref.read(openRecordProvider.notifier).open(record.id),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 4),
-        child: SizedBox(
-          height: 46,
-          child: Row(
-            children: [
-              Expanded(
-                flex: 5,
-                child: Row(
-                  children: [
-                    Icon(icon, size: 16, color: color),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            record.displayName,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Clay.body(13, weight: FontWeight.w700),
-                          ),
-                          if (record.preview.isNotEmpty)
+    return GestureDetector(
+      onSecondaryTapUp: (details) =>
+          _menu(context, ref, details.globalPosition),
+      child: InkWell(
+        hoverColor: Clay.bg,
+        onTap: () => ref.read(openRecordProvider.notifier).open(record.id),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12, right: 4),
+          child: SizedBox(
+            height: 46,
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Row(
+                    children: [
+                      Icon(icon, size: 16, color: color),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              record.preview,
+                              record.displayName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Clay.body(11.5, color: Clay.inkCaption),
+                              style: Clay.body(13, weight: FontWeight.w700),
                             ),
-                        ],
+                            if (record.preview.isNotEmpty)
+                              Text(
+                                record.preview,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Clay.body(11.5, color: Clay.inkCaption),
+                              ),
+                          ],
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+                Expanded(flex: 1, child: Text(kind, style: cell)),
+                Expanded(
+                  flex: 1,
+                  child: Text('${record.detectionCount}', style: cell),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    formatWhen(context, record.updatedAt),
+                    style: cell,
+                  ),
+                ),
+                PopupMenuButton<_RecordAction>(
+                  tooltip: l10n.moreActions,
+                  iconSize: 18,
+                  icon: const Icon(
+                    Icons.more_horiz_rounded,
+                    color: Clay.inkCaption,
+                  ),
+                  onSelected: (action) => switch (action) {
+                    _RecordAction.rename => _rename(context, ref),
+                    _RecordAction.delete => _delete(context, ref),
+                  },
+                  itemBuilder: (_) => [
+                    PopupMenuItem(
+                      height: 32,
+                      value: _RecordAction.rename,
+                      child: Text(l10n.rename),
+                    ),
+                    PopupMenuItem(
+                      height: 32,
+                      value: _RecordAction.delete,
+                      child: Text(l10n.delete),
                     ),
                   ],
                 ),
-              ),
-              Expanded(flex: 1, child: Text(kind, style: cell)),
-              Expanded(
-                flex: 1,
-                child: Text('${record.detectionCount}', style: cell),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(formatWhen(context, record.updatedAt), style: cell),
-              ),
-              PopupMenuButton<_RecordAction>(
-                tooltip: l10n.moreActions,
-                iconSize: 18,
-                icon: const Icon(
-                  Icons.more_horiz_rounded,
-                  color: Clay.inkCaption,
-                ),
-                onSelected: (action) => switch (action) {
-                  _RecordAction.rename => _rename(context, ref),
-                  _RecordAction.delete => _delete(context, ref),
-                },
-                itemBuilder: (_) => [
-                  PopupMenuItem(
-                    value: _RecordAction.rename,
-                    child: Text(l10n.rename),
-                  ),
-                  PopupMenuItem(
-                    value: _RecordAction.delete,
-                    child: Text(l10n.delete),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

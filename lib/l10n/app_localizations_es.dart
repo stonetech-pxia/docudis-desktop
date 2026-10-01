@@ -215,7 +215,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get restoreHint =>
-      'Pega la respuesta de la IA. Las etiquetas se sustituyen por los datos reales con la clave guardada en este teléfono.';
+      'Pega la respuesta de la IA. Las etiquetas se sustituyen por los datos reales con la clave guardada en este ordenador.';
 
   @override
   String get entityPerson => 'Nombre';
@@ -310,7 +310,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get restoreKeyTitle =>
-      'Clave de restauración guardada en este teléfono';
+      'Clave de restauración guardada en este ordenador';
 
   @override
   String restoreKeySubtitle(int count) {
@@ -401,7 +401,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeHeadline => 'Protege tus datos personales anonimizándolos.';
 
   @override
-  String get homeCaption => 'Todo se hace en este teléfono. No se sube nada.';
+  String get homeCaption => 'Todo se hace en este ordenador. No se sube nada.';
 
   @override
   String get anonymizeButton => 'Anonimizar';
@@ -450,7 +450,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dictionaryHint =>
-      'Escribe lo que debe ocultarse en todos los documentos, como tu nombre, tu empresa o tu dirección. La lista se queda en este teléfono y puedes volver a mostrar un elemento en un documento concreto.';
+      'Escribe lo que debe ocultarse en todos los documentos, como tu nombre, tu empresa o tu dirección. La lista se queda en este ordenador y puedes volver a mostrar un elemento en un documento concreto.';
 
   @override
   String get dictionaryEmpty =>
@@ -682,4 +682,18 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get showInFolder => 'Mostrar en la carpeta';
+
+  @override
+  String get navDictionary => 'Diccionario';
+
+  @override
+  String blockDocuments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'en $count documentos',
+      one: 'en 1 documento',
+    );
+    return '$_temp0';
+  }
 }

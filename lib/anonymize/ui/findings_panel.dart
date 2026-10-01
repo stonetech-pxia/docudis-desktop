@@ -23,12 +23,19 @@ class FindingsPanel extends StatelessWidget {
     super.key,
     required this.detections,
     required this.onChanged,
+    this.onAlwaysHide,
+    this.onNeverHide,
   });
 
   final List<Detection> detections;
 
   /// The detections with the ones at these indices set to `hidden`.
   final void Function(Iterable<int> indices, bool hidden) onChanged;
+
+  /// Right-click menu: put a value on the Always hide or Never hide list,
+  /// for the next documents.
+  final ValueChanged<String>? onAlwaysHide;
+  final ValueChanged<String>? onNeverHide;
 
   List<_Finding> _findings() {
     final byKey = <(EntityType, String), _Finding>{};
@@ -107,6 +114,7 @@ class FindingsPanel extends StatelessWidget {
                   color: entityColors(f.type).accent,
                   hidden: on,
                   onChanged: () => onChanged(f.indices, !on),
+                  onMenu: (position) => _menu(context, position, f.value),
                 );
               },
             ),
@@ -114,6 +122,41 @@ class FindingsPanel extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+extension on FindingsPanel {
+  Future<void> _menu(
+    BuildContext context,
+    Offset position,
+    String value,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final always = onAlwaysHide, never = onNeverHide;
+    final picked = await showMenu<ValueChanged<String>>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy,
+        position.dx,
+        position.dy,
+      ),
+      items: [
+        if (always != null)
+          PopupMenuItem(
+            height: 32,
+            value: always,
+            child: Text(l10n.dictionaryAdd(value)),
+          ),
+        if (never != null)
+          PopupMenuItem(
+            height: 32,
+            value: never,
+            child: Text(l10n.neverHideAdd(value)),
+          ),
+      ],
+    );
+    picked?.call(value);
   }
 }
 
@@ -155,6 +198,7 @@ class _FindingRow extends StatelessWidget {
     required this.color,
     required this.hidden,
     required this.onChanged,
+    required this.onMenu,
   });
 
   final String value;
@@ -164,55 +208,61 @@ class _FindingRow extends StatelessWidget {
   final bool hidden;
   final VoidCallback onChanged;
 
+  /// Right click, at this global position.
+  final ValueChanged<Offset> onMenu;
+
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: onChanged,
-    hoverColor: Clay.bg,
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(6, 2, 10, 2),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 28,
-            height: 28,
-            child: Checkbox(
-              value: hidden,
-              onChanged: (_) => onChanged(),
-              visualDensity: VisualDensity.compact,
-              activeColor: Clay.primary,
+  Widget build(BuildContext context) => GestureDetector(
+    onSecondaryTapUp: (details) => onMenu(details.globalPosition),
+    child: InkWell(
+      onTap: onChanged,
+      hoverColor: Clay.bg,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(6, 2, 10, 2),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 28,
+              height: 28,
+              child: Checkbox(
+                value: hidden,
+                onChanged: (_) => onChanged(),
+                visualDensity: VisualDensity.compact,
+                activeColor: Clay.primary,
+              ),
             ),
-          ),
-          Container(
-            width: 8,
-            height: 8,
-            margin: const EdgeInsets.only(left: 2, right: 8),
-            decoration: BoxDecoration(
-              color: hidden ? color : Clay.disabled,
-              borderRadius: BorderRadius.circular(2),
+            Container(
+              width: 8,
+              height: 8,
+              margin: const EdgeInsets.only(left: 2, right: 8),
+              decoration: BoxDecoration(
+                color: hidden ? color : Clay.disabled,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value.replaceAll(RegExp(r'\s+'), ' '),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Clay.body(
-                    13,
-                    weight: FontWeight.w500,
-                    color: hidden ? Clay.ink : Clay.inkPlaceholder,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value.replaceAll(RegExp(r'\s+'), ' '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Clay.body(
+                      13,
+                      weight: FontWeight.w500,
+                      color: hidden ? Clay.ink : Clay.inkPlaceholder,
+                    ),
                   ),
-                ),
-                Text(
-                  count > 1 ? '$kind · ×$count' : kind,
-                  style: Clay.body(11, color: Clay.inkCaption),
-                ),
-              ],
+                  Text(
+                    count > 1 ? '$kind · ×$count' : kind,
+                    style: Clay.body(11, color: Clay.inkCaption),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );

@@ -7,11 +7,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import '../preferences.dart';
 import 'anonymize_service.dart';
 import 'input/input_source.dart';
 import 'input/text_extractor.dart';
+import 'manual_blocks.dart';
 import 'storage/anonymization_record.dart';
 import 'storage/record_store.dart';
+
+/// The folder for the app's own files (`<app support>`); tests point it
+/// at a temporary one.
+final appSupportDirectoryProvider = FutureProvider<Directory>(
+  (ref) => getApplicationSupportDirectory(),
+);
 
 /// A list of terms, newest first, kept in `<app support>/<fileName>` like
 /// the records, and left alone by "Clear data on this device".
@@ -22,8 +30,9 @@ abstract class TermListNotifier extends AsyncNotifier<List<String>> {
   @override
   Future<List<String>> build() => read();
 
-  Future<File> _file() async =>
-      File(p.join((await getApplicationSupportDirectory()).path, fileName));
+  Future<File> _file() async => File(
+    p.join((await ref.read(appSupportDirectoryProvider.future)).path, fileName),
+  );
 
   @protected
   Future<List<String>> read() async {
@@ -53,15 +62,55 @@ abstract class TermListNotifier extends AsyncNotifier<List<String>> {
 }
 
 /// The custom dictionary ("Always hide"): text hidden in every document.
+///
+/// "Hide only this list" never outlives an empty list: taking the last word
+/// off switches it off, and so does the first word added to an empty list,
+/// so it never comes back on without the user asking for it again.
 class DictionaryNotifier extends TermListNotifier {
   @override
   String get fileName => 'dictionary.json';
+
+  @override
+  Future<void> add(String term) async {
+    if ((await future).isEmpty) {
+      await ref.read(listOnlyProvider.notifier).set(false);
+    }
+    await super.add(term);
+  }
+
+  @override
+  Future<void> remove(String term) async {
+    await super.remove(term);
+    if (state.requireValue.isEmpty) {
+      await ref.read(listOnlyProvider.notifier).set(false);
+    }
+  }
 }
 
 final dictionaryProvider =
     AsyncNotifierProvider<DictionaryNotifier, List<String>>(
       DictionaryNotifier.new,
     );
+
+const _listOnlyKey = 'list_only';
+
+/// "Hide only this list": a run with a non-empty dictionary then uses the
+/// list alone, without the model, the rules or the bundled lists. Off by
+/// default; kept in SharedPreferences.
+class ListOnlyNotifier extends Notifier<bool> {
+  @override
+  bool build() =>
+      ref.watch(sharedPreferencesProvider).getBool(_listOnlyKey) ?? false;
+
+  Future<void> set(bool on) async {
+    state = on;
+    await ref.read(sharedPreferencesProvider).setBool(_listOnlyKey, on);
+  }
+}
+
+final listOnlyProvider = NotifierProvider<ListOnlyNotifier, bool>(
+  ListOnlyNotifier.new,
+);
 
 /// "Never hide": public names left readable in every document.
 class NeverHideNotifier extends TermListNotifier {
@@ -82,6 +131,7 @@ final anonymizeServiceProvider = Provider<AnonymizeService>((ref) {
     extractor: TextExtractor(),
     dictionaryTerms: () => ref.read(dictionaryProvider.future),
     neverHideTerms: () => ref.read(neverHideProvider.future),
+    listOnly: () => ref.read(listOnlyProvider),
   );
 });
 
@@ -111,6 +161,26 @@ final openRecordProvider = NotifierProvider<OpenRecordNotifier, String?>(
 final recordsProvider = FutureProvider<List<AnonymizationRecord>>(
   (ref) => ref.watch(recordStoreProvider).list(),
 );
+
+/// What the user hid by hand lately and has not put in the dictionary yet.
+/// Follows the records, so it refreshes after an edit or a clear.
+final manualBlocksProvider = FutureProvider<List<ManualBlock>>((ref) async {
+  final store = ref.watch(recordStoreProvider);
+  final records = ref.watch(recordsProvider.future);
+  final dictionary = ref.watch(dictionaryProvider.future);
+  await records;
+  return recentManualBlocks(store, dictionary: await dictionary);
+});
+
+/// What the user showed again by hand lately and has not put on the
+/// never-hide list yet.
+final revealedBlocksProvider = FutureProvider<List<ManualBlock>>((ref) async {
+  final store = ref.watch(recordStoreProvider);
+  final records = ref.watch(recordsProvider.future);
+  final neverHide = ref.watch(neverHideProvider.future);
+  await records;
+  return recentRevealed(store, neverHide: await neverHide);
+});
 
 final recordDetailProvider = FutureProvider.family<RecordDetail, String>(
   (ref, id) => ref.watch(recordStoreProvider).load(id),

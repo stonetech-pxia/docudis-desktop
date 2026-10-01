@@ -7,19 +7,20 @@ import '../anonymize/ui/workspace_page.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/clay_theme.dart';
 import '../theme/clay_widgets.dart';
+import 'dictionary_page.dart';
 import 'settings_page.dart';
 
-/// App shell, no sign-in: Protect / History / Settings behind a side bar on
-/// wide windows and the phone's bottom bar on narrow ones. Each tab keeps
+/// App shell, no sign-in: Protect / History / Dictionary / Settings in a
+/// side bar, which narrows to a rail of icons in small windows. Each tab keeps
 /// its own page stack, so the restore page opens beside the side bar, not
 /// over it. Opening a record (History, the recent list) shows it in the
 /// Protect workspace.
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
-  /// Narrower than this, the side bar would squeeze the page below a phone's
-  /// width, so the shell falls back to the bottom bar.
-  static const sideNavMinWidth = 720.0;
+  /// Narrower than this, the full side bar leaves the workspace too little
+  /// room, so it becomes a rail of icons.
+  static const sideNavMinWidth = 900.0;
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -28,7 +29,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   int _index = 0;
 
-  final _tabs = [for (var i = 0; i < 3; i++) GlobalKey<NavigatorState>()];
+  final _tabs = [for (var i = 0; i < 4; i++) GlobalKey<NavigatorState>()];
 
   /// Switches tab; choosing the current one again goes back to its first
   /// page.
@@ -56,6 +57,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final items = [
       (Icons.verified_user_outlined, l10n.anonymizeTitle),
       (Icons.history_rounded, l10n.historyTitle),
+      (Icons.menu_book_outlined, l10n.navDictionary),
       (Icons.settings_outlined, l10n.navSettings),
     ];
     final pages = IndexedStack(
@@ -63,20 +65,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       children: [
         _tab(0, const WorkspacePage()),
         _tab(1, const HistoryPage()),
-        _tab(2, const SettingsPage()),
+        _tab(2, const DictionaryPage()),
+        _tab(3, const SettingsPage()),
       ],
     );
-    final wide = MediaQuery.sizeOf(context).width >= HomePage.sideNavMinWidth;
-    if (!wide) {
-      return Scaffold(
-        body: pages,
-        bottomNavigationBar: ClayNavBar(
-          index: _index,
-          onChanged: _select,
-          items: items,
-        ),
-      );
-    }
+    final compact = MediaQuery.sizeOf(context).width < HomePage.sideNavMinWidth;
     return Scaffold(
       body: Row(
         children: [
@@ -85,6 +78,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             index: _index,
             onChanged: _select,
             items: items,
+            compact: compact,
             footer: _RecentList(highlight: _index == 0),
           ),
           Expanded(child: pages),

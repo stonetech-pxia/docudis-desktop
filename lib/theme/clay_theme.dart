@@ -227,6 +227,10 @@ ThemeData clayTheme() {
   return ThemeData(
     useMaterial3: true,
     visualDensity: VisualDensity.compact,
+    // Desktop controls answer the pointer with a hover tint, not a ripple.
+    splashFactory: NoSplash.splashFactory,
+    hoverColor: Clay.bg,
+    highlightColor: Clay.divider.withValues(alpha: 0.5),
     colorScheme: scheme,
     scaffoldBackgroundColor: Clay.bg,
     fontFamily: Clay.bodyFamily,
@@ -290,17 +294,30 @@ ThemeData clayTheme() {
       space: 1,
       thickness: 1,
     ),
+    // A desktop notice: a small toast, not a bar across the window.
     snackBarTheme: SnackBarThemeData(
       backgroundColor: Clay.ink,
-      contentTextStyle: Clay.body(14, color: Colors.white),
+      contentTextStyle: Clay.body(13, color: Colors.white),
       behavior: SnackBarBehavior.floating,
+      width: 360,
       shape: controlShape,
     ),
     dialogTheme: DialogThemeData(
       backgroundColor: Clay.surface,
       shape: cardShape,
-      titleTextStyle: Clay.heading(18, weight: FontWeight.w600),
-      contentTextStyle: Clay.body(15, color: Clay.inkMuted, height: 1.5),
+      constraints: const BoxConstraints(minWidth: 280, maxWidth: 440),
+      titleTextStyle: Clay.heading(15, weight: FontWeight.w600),
+      contentTextStyle: Clay.body(13, color: Clay.inkMuted, height: 1.5),
+      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+    ),
+    tooltipTheme: TooltipThemeData(
+      waitDuration: const Duration(milliseconds: 500),
+      textStyle: Clay.body(12, color: Colors.white),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Clay.ink.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(4),
+      ),
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Clay.surface,
@@ -312,7 +329,9 @@ ThemeData clayTheme() {
     popupMenuTheme: PopupMenuThemeData(
       color: Clay.surface,
       shape: controlShape,
-      textStyle: Clay.body(15),
+      textStyle: Clay.body(13),
+      labelTextStyle: WidgetStatePropertyAll(Clay.body(13)),
+      menuPadding: const EdgeInsets.symmetric(vertical: 4),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: Clay.primary,
