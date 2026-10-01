@@ -202,5 +202,23 @@
   "resultTextOnlyNote": "这份 PDF 有些页面没有文字（扫描页），所以没有生成 PDF 副本，只有下面的文字做了匿名化。",
   "saveFile": "另存为…",
   "savedFile": "已保存",
-  "dropHint": "或把文件拖到这里"
+  "dropHint": "或把文件拖到这里",
+
+  "toolbarOpen": "打开",
+  "toolbarNew": "新建",
+  "restoreReply": "还原回复",
+  "findingsTitle": "检测结果",
+  "editorHint": "粘贴或输入文字，也可以把文件拖到这里",
+  "anonymizedEmpty": "匿名化后的文字会显示在这里",
+  "statusModel": "模型：{name}",
+  "statusNoModel": "未安装 NER 模型",
+  "statusLanguages": "语言：{languages}",
+  "historyColumnName": "名称",
+  "historyColumnType": "类型",
+  "historyColumnFound": "检测数",
+  "historyColumnUpdated": "修改时间",
+  "kindText": "文本",
+  "kindFile": "文件",
+  "recentTitle": "最近",
+  "savedToHistory": "已保存到历史记录"
 }

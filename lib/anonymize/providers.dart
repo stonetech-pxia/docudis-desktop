@@ -85,9 +85,26 @@ final anonymizeServiceProvider = Provider<AnonymizeService>((ref) {
   );
 });
 
-/// Whether the NER model loaded; false means rules and lists only.
-final nerReadyProvider = FutureProvider<bool>(
-  (ref) async => await ref.watch(anonymizeServiceProvider).nerModel() != null,
+/// The loaded NER model's name ("xlm-roberta-base-ner-docudis"); null
+/// when there is none and only rules and lists run.
+final nerNameProvider = FutureProvider<String?>((ref) async {
+  final model = await ref.watch(anonymizeServiceProvider).nerModel();
+  return model?.name.replaceFirst('ner:', '');
+});
+
+/// The record open in the workspace; null for a new, empty document.
+/// History and the recent list open records here.
+class OpenRecordNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void open(String id) => state = id;
+
+  void close() => state = null;
+}
+
+final openRecordProvider = NotifierProvider<OpenRecordNotifier, String?>(
+  OpenRecordNotifier.new,
 );
 
 /// History list, newest first. Invalidate after any write.

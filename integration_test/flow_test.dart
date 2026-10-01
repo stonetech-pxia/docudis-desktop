@@ -12,7 +12,7 @@ import 'package:docudis/anonymize/input/input_source.dart';
 import 'package:docudis/anonymize/output/docx_redaction.dart';
 import 'package:docudis/anonymize/providers.dart';
 import 'package:docudis/anonymize/storage/record_store.dart';
-import 'package:docudis/anonymize/ui/result_page.dart';
+import 'package:docudis/anonymize/ui/findings_panel.dart';
 import 'package:docudis/app.dart';
 import 'package:docudis/preferences.dart';
 import 'package:flutter/material.dart';
@@ -66,16 +66,16 @@ void main() {
   testWidgets('paste, anonymize, review and restore', (tester) async {
     final container = await _pumpApp(tester);
     expect(
-      await container.read(nerReadyProvider.future),
-      isTrue,
+      await container.read(nerNameProvider.future),
+      isNotNull,
       reason: 'the NER model should be installed and load',
     );
 
     await Clipboard.setData(const ClipboardData(text: _pasted));
-    await tester.tap(find.text('Paste text'));
+    await tester.tap(find.text('Paste'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Anonymize'));
-    await _waitFor(tester, find.byType(ResultPage));
+    await _waitFor(tester, find.byType(FindingsPanel));
     await tester.pumpAndSettle();
 
     final records = await container.read(recordsProvider.future);
@@ -96,22 +96,26 @@ void main() {
     expect(output, contains('[PERSON_1]'));
     expect(output, contains('[EMAIL_1]'));
 
-    // Show the e-mail again, as the review page does on a tap.
-    await container.read(reviewControllerProvider.notifier).apply(
-      detail.record.id,
-      [
-        for (final d in detail.detections)
-          d.value == 'sarah.meyer@example.fr' ? d.copyWith(enabled: false) : d,
-      ],
+    // Show the e-mail again: untick it in the findings.
+    await tester.tap(
+      find.descendant(
+        of: find.byType(FindingsPanel),
+        matching: find.text('sarah.meyer@example.fr'),
+      ),
     );
-    final edited = await container.read(
-      recordDetailProvider(detail.record.id).future,
-    );
+    var edited = detail;
+    for (var i = 0; i < 50; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+      edited = await container.read(
+        recordDetailProvider(detail.record.id).future,
+      );
+      if (edited.output.contains('sarah.meyer@example.fr')) break;
+    }
     expect(edited.output, contains('sarah.meyer@example.fr'));
     expect(edited.output, contains('[PERSON_1]'));
 
     // Restore an AI reply on the restore page.
-    await tester.tap(find.byTooltip('Restore'));
+    await tester.tap(find.text('Restore reply'));
     await tester.pumpAndSettle();
     await tester.enterText(
       find.byType(TextField),

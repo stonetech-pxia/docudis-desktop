@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:docudis_ffi/docudis_ffi.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../theme/clay_theme.dart';
-import '../../theme/clay_widgets.dart';
+import '../../theme/desk_widgets.dart';
 import '../engine/native_libraries.dart';
 import '../providers.dart';
 import '../storage/anonymization_record.dart';
@@ -112,152 +113,201 @@ class _RestorePageState extends ConsumerState<RestorePage> {
     final blocked =
         !_showAnyway && (better != null || check.unknown.isNotEmpty);
     void showAnyway() => setState(() => _showAnyway = true);
+    final mod = Platform.isMacOS ? '⌘' : 'Ctrl+';
+    // Title and explanation on one line.
+    final stop = Localizations.localeOf(context).languageCode == 'zh'
+        ? '。'
+        : '. ';
+    final noteAction = TextButton.styleFrom(
+      foregroundColor: Clay.warningText,
+      minimumSize: const Size(0, 26),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      textStyle: Clay.body(12.5, weight: FontWeight.w700),
+    );
 
-    return ClayPage(
-      title: l10n.restoreTitle,
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-        children: [
-          Text(
-            l10n.restoreHint,
-            style: Clay.body(14, color: Clay.inkMuted, height: 1.5),
+    final notes = <Widget>[
+      if (restored != null && blocked)
+        if (better != null)
+          DeskNoteBar(
+            text:
+                '${l10n.restoreOtherTitle}$stop${l10n.restoreOtherBody(_nameOf(better))}',
+            actions: [
+              TextButton(
+                style: noteAction,
+                onPressed: showAnyway,
+                child: Text(l10n.restoreShowAnyway),
+              ),
+              TextButton(
+                style: noteAction,
+                onPressed: () => _useRecord(better),
+                child: Text(l10n.restoreUseOther),
+              ),
+            ],
+          )
+        else
+          DeskNoteBar(
+            text:
+                '${l10n.restoreMismatchTitle}$stop${l10n.restoreMismatchBody(_labels(check.unknown))}',
+            actions: [
+              TextButton(
+                style: noteAction,
+                onPressed: showAnyway,
+                child: Text(l10n.restoreShowAnyway),
+              ),
+            ],
           ),
-          if (record != null) ...[
-            const SizedBox(height: 12),
-            _DocumentRow(record: record, label: l10n.restoreDocumentLabel),
-          ],
-          const SizedBox(height: 16),
-          ClayCard(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-            border: Border.all(color: Clay.primary, width: 1.5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Expanded(child: ClayLabel(l10n.aiReplyLabel)),
-                    _PasteButton(label: l10n.paste, onPressed: _paste),
-                  ],
-                ),
-                TextField(
-                  controller: _input,
-                  onChanged: _onChanged,
-                  minLines: 4,
-                  maxLines: 10,
-                  style: Clay.body(14, color: Clay.inkMuted, height: 1.7),
-                  decoration: const InputDecoration(
-                    filled: false,
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
-              ],
-            ),
+      if (restored != null && !blocked && better != null)
+        DeskNoteBar(text: l10n.restoreShownAnyway(_nameOf(better))),
+      if (restored != null &&
+          !blocked &&
+          (check.unknown.isNotEmpty || check.invented.isNotEmpty))
+        DeskNoteBar(
+          text: l10n.restoreInvented(
+            _labels([...check.unknown, ...check.invented]),
           ),
-          if (restored != null && blocked) ...[
-            const SizedBox(height: 16),
-            if (better != null)
-              _Mismatch(
-                title: l10n.restoreOtherTitle,
-                body: l10n.restoreOtherBody(_nameOf(better)),
-                actions: [
-                  TextButton(
-                    onPressed: showAnyway,
-                    child: Text(l10n.restoreShowAnyway),
+        ),
+    ];
+
+    final originals = detail.value?.map.reverse.values ?? const <String>[];
+    final shown = restored != null && !blocked
+        ? HighlightedText.restored(
+            restored,
+            originals,
+            style: Clay.body(14, height: 1.7),
+          )
+        : null;
+
+    Future<void> copy() async {
+      if (shown == null) return;
+      await Clipboard.setData(ClipboardData(text: restored!));
+      if (context.mounted) showSnack(context, l10n.copied);
+    }
+
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.escape): () =>
+            Navigator.of(context).maybePop(),
+        for (final meta in [true, false])
+          SingleActivator(
+            LogicalKeyboardKey.keyC,
+            meta: meta,
+            control: !meta,
+            shift: true,
+          ): copy,
+      },
+      child: Focus(
+        autofocus: true,
+        child: Scaffold(
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              DeskToolbar(
+                leading: [
+                  DeskTool(
+                    icon: Icons.arrow_back_rounded,
+                    label: l10n.anonymizeTitle,
+                    shortcut: 'Esc',
+                    onPressed: () => Navigator.of(context).maybePop(),
                   ),
-                  TextButton(
-                    onPressed: () => _useRecord(better),
-                    child: Text(l10n.restoreUseOther),
+                  DeskTool(
+                    icon: Icons.content_paste_rounded,
+                    label: l10n.paste,
+                    shortcut: '${mod}V',
+                    onPressed: _paste,
                   ),
                 ],
-              )
-            else
-              _Mismatch(
-                title: l10n.restoreMismatchTitle,
-                body: l10n.restoreMismatchBody(_labels(check.unknown)),
-                actions: [
-                  TextButton(
-                    onPressed: showAnyway,
-                    child: Text(l10n.restoreShowAnyway),
+                trailing: [
+                  DeskTool(
+                    icon: Icons.copy_rounded,
+                    label: l10n.copyRestored,
+                    shortcut: '$mod⇧C',
+                    primary: true,
+                    onPressed: shown == null ? null : copy,
                   ),
                 ],
               ),
-          ],
-          if (restored != null && !blocked) ...[
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                const Expanded(child: Divider()),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: ClayLabel(l10n.restoredLabel),
-                ),
-                const Expanded(child: Divider()),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ClayCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Builder(
-                    builder: (context) {
-                      final originals =
-                          detail.value?.map.reverse.values ?? const <String>[];
-                      final (span, found) = HighlightedText.restored(
-                        restored,
-                        originals,
-                      );
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SelectableText.rich(span),
-                          const SizedBox(height: 12),
-                          // Shown here only after "Show anyway".
-                          if (better != null) ...[
-                            ClayWarningNote(
-                              text: l10n.restoreShownAnyway(_nameOf(better)),
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                          if (check.unknown.isNotEmpty ||
-                              check.invented.isNotEmpty)
-                            ClayWarningNote(
-                              text: l10n.restoreInvented(
-                                _labels([...check.unknown, ...check.invented]),
-                              ),
-                            )
-                          else if (better == null)
-                            Text(
-                              l10n.restoredCount(found),
-                              style: Clay.body(
-                                12.5,
-                                color: Clay.secondaryText,
-                                weight: FontWeight.w500,
+              ...notes,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: DocumentPane(
+                          caption: l10n.aiReplyLabel,
+                          trailing: record == null
+                              ? null
+                              : Flexible(
+                                  child: Text(
+                                    '${l10n.restoreDocumentLabel}: '
+                                    '${record.displayName} · '
+                                    '${formatWhen(context, record.updatedAt)}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Clay.body(
+                                      12,
+                                      color: Clay.inkPlaceholder,
+                                    ),
+                                  ),
+                                ),
+                          child: TextField(
+                            controller: _input,
+                            onChanged: _onChanged,
+                            expands: true,
+                            maxLines: null,
+                            textAlignVertical: TextAlignVertical.top,
+                            style: Clay.body(14, height: 1.7),
+                            decoration: InputDecoration(
+                              hintText: l10n.restoreHint,
+                              filled: false,
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              contentPadding: const EdgeInsets.fromLTRB(
+                                14,
+                                10,
+                                14,
+                                14,
                               ),
                             ),
-                        ],
-                      );
-                    },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: DocumentPane(
+                          caption: l10n.restoredLabel,
+                          trailing: shown == null
+                              ? null
+                              : Text(
+                                  l10n.restoredCount(shown.$2),
+                                  style: Clay.body(
+                                    12,
+                                    color: Clay.secondaryText,
+                                  ),
+                                ),
+                          child: shown == null
+                              ? const SizedBox.shrink()
+                              : SingleChildScrollView(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    14,
+                                    10,
+                                    14,
+                                    14,
+                                  ),
+                                  child: SelectableText.rich(shown.$1),
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
-        ],
+            ],
+          ),
+        ),
       ),
-      bottom: restored == null || blocked
-          ? null
-          : FilledButton.icon(
-              onPressed: () async {
-                await Clipboard.setData(ClipboardData(text: restored));
-                if (context.mounted) showSnack(context, l10n.copied);
-              },
-              icon: const Icon(Icons.copy_rounded, size: 20),
-              label: Text(l10n.copyRestored),
-            ),
     );
   }
 }
@@ -265,122 +315,3 @@ class _RestorePageState extends ConsumerState<RestorePage> {
 /// At most three labels, as a list to read.
 String _labels(List<String> labels) =>
     labels.length > 3 ? '${labels.take(3).join(', ')}…' : labels.join(', ');
-
-class _PasteButton extends StatelessWidget {
-  const _PasteButton({required this.label, required this.onPressed});
-
-  final String label;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) => TextButton.icon(
-    onPressed: onPressed,
-    style: TextButton.styleFrom(
-      backgroundColor: Clay.primaryTint,
-      foregroundColor: Clay.primaryPressed,
-      minimumSize: const Size(0, 32),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      shape: const StadiumBorder(),
-      textStyle: Clay.body(13, weight: FontWeight.w700),
-    ),
-    icon: const Icon(Icons.content_paste_rounded, size: 14),
-    label: Text(label),
-  );
-}
-
-/// The document whose restore key the page uses, as History lists it.
-class _DocumentRow extends StatelessWidget {
-  const _DocumentRow({required this.record, required this.label});
-
-  final AnonymizationRecord record;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final icon = switch (record.kind) {
-      InputKind.text => Icons.content_paste_rounded,
-      InputKind.file => Icons.description_outlined,
-      InputKind.image => Icons.photo_camera_outlined,
-    };
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: Clay.inkCaption),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClayLabel(label),
-              Text(
-                record.displayName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              Text(
-                formatWhen(context, record.updatedAt),
-                style: Clay.body(12, color: Clay.inkCaption),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Shown instead of the result when the reply does not fit the document.
-class _Mismatch extends StatelessWidget {
-  const _Mismatch({
-    required this.title,
-    required this.body,
-    required this.actions,
-  });
-
-  final String title;
-  final String body;
-  final List<Widget> actions;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
-    decoration: BoxDecoration(
-      color: Clay.warningBg,
-      borderRadius: BorderRadius.circular(Clay.controlRadius),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Icon(
-              Icons.warning_amber_rounded,
-              size: 20,
-              color: Clay.warningText,
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                title,
-                style: Clay.body(
-                  15,
-                  weight: FontWeight.w700,
-                  color: Clay.warningText,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Text(
-          body,
-          style: Clay.body(13.5, color: Clay.warningText, height: 1.5),
-        ),
-        Align(
-          alignment: AlignmentDirectional.centerEnd,
-          child: Wrap(alignment: WrapAlignment.end, children: actions),
-        ),
-      ],
-    ),
-  );
-}

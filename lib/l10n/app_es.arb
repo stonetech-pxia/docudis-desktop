@@ -165,5 +165,23 @@
   "resultTextOnlyNote": "Algunas páginas de este PDF no tienen texto (escaneos), así que no se ha hecho una copia en PDF. Solo el texto de abajo está anonimizado.",
   "saveFile": "Guardar como…",
   "savedFile": "Guardado",
-  "dropHint": "o suelta un archivo aquí"
+  "dropHint": "o suelta un archivo aquí",
+
+  "toolbarOpen": "Abrir",
+  "toolbarNew": "Nuevo",
+  "restoreReply": "Restaurar respuesta",
+  "findingsTitle": "Elementos detectados",
+  "editorHint": "Pega o escribe texto, o suelta un archivo aquí",
+  "anonymizedEmpty": "El texto anonimizado aparece aquí",
+  "statusModel": "Modelo: {name}",
+  "statusNoModel": "Sin modelo NER",
+  "statusLanguages": "Idioma: {languages}",
+  "historyColumnName": "Nombre",
+  "historyColumnType": "Tipo",
+  "historyColumnFound": "Detectados",
+  "historyColumnUpdated": "Modificado",
+  "kindText": "Texto",
+  "kindFile": "Archivo",
+  "recentTitle": "Recientes",
+  "savedToHistory": "Guardado en el historial"
 }

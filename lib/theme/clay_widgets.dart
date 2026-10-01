@@ -47,7 +47,7 @@ class ClayPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Clay.heading(17, weight: FontWeight.w600),
+                      style: Clay.heading(14, weight: FontWeight.w600),
                     ),
                   ),
                   if (actions.isEmpty)
@@ -85,7 +85,7 @@ class ClayIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       tooltip: tooltip,
-      icon: Icon(icon, size: 22, color: color),
+      icon: Icon(icon, size: 18, color: color),
       constraints: const BoxConstraints.tightFor(
         width: Clay.tapTarget,
         height: Clay.tapTarget,
@@ -635,7 +635,9 @@ class _NavItem extends StatelessWidget {
 }
 
 /// Desktop counterpart of [ClayNavBar]: a cream column on the left with the
-/// app name on top and one row per tab, the active row on a terracotta tint.
+/// app name on top, one compact row per section (the active one on a
+/// terracotta tint), and an optional [footer] under them, such as recent
+/// documents.
 class ClaySideNav extends StatelessWidget {
   const ClaySideNav({
     super.key,
@@ -643,14 +645,16 @@ class ClaySideNav extends StatelessWidget {
     required this.index,
     required this.onChanged,
     required this.items,
+    this.footer,
   });
 
-  static const width = 224.0;
+  static const width = 200.0;
 
   final String title;
   final int index;
   final ValueChanged<int> onChanged;
   final List<(IconData, String)> items;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -661,21 +665,22 @@ class ClaySideNav extends StatelessWidget {
     child: SizedBox(
       width: width,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
+        padding: const EdgeInsets.fromLTRB(8, 14, 8, 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
-              child: Text(title, style: Clay.heading(20)),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 14),
+              child: Text(title, style: Clay.heading(15)),
             ),
             for (var i = 0; i < items.length; i++)
-              _SideNavItem(
+              ClaySideNavRow(
                 icon: items[i].$1,
                 label: items[i].$2,
                 selected: i == index,
                 onTap: () => onChanged(i),
               ),
+            if (footer case final footer?) Expanded(child: footer),
           ],
         ),
       ),
@@ -683,15 +688,18 @@ class ClaySideNav extends StatelessWidget {
   );
 }
 
-class _SideNavItem extends StatelessWidget {
-  const _SideNavItem({
-    required this.icon,
+/// One side bar row: icon and label, terracotta on a tint when selected,
+/// a light wash under the pointer.
+class ClaySideNavRow extends StatelessWidget {
+  const ClaySideNavRow({
+    super.key,
     required this.label,
-    required this.selected,
     required this.onTap,
+    this.icon,
+    this.selected = false,
   });
 
-  final IconData icon;
+  final IconData? icon;
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -699,8 +707,9 @@ class _SideNavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = selected ? Clay.primary : Clay.inkMuted;
+    final icon = this.icon;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(bottom: 2),
       child: Semantics(
         button: true,
         selected: selected,
@@ -708,25 +717,30 @@ class _SideNavItem extends StatelessWidget {
         excludeSemantics: true,
         child: Material(
           color: selected ? Clay.primaryTint : Colors.transparent,
-          borderRadius: BorderRadius.circular(Clay.controlRadius),
+          borderRadius: BorderRadius.circular(6),
           child: InkWell(
             onTap: onTap,
-            borderRadius: BorderRadius.circular(Clay.controlRadius),
+            borderRadius: BorderRadius.circular(6),
+            hoverColor: Clay.bg,
             child: SizedBox(
-              height: Clay.tapTarget,
+              height: 30,
               child: Row(
                 children: [
-                  const SizedBox(width: 12),
-                  Icon(icon, size: 22, color: color),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
+                  if (icon != null) ...[
+                    Icon(icon, size: 17, color: color),
+                    const SizedBox(width: 9),
+                  ],
                   Expanded(
                     child: Text(
                       label,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Clay.body(
-                        15,
-                        weight: FontWeight.w700,
+                        13,
+                        weight: icon == null
+                            ? FontWeight.w500
+                            : FontWeight.w700,
                         color: color,
                       ),
                     ),

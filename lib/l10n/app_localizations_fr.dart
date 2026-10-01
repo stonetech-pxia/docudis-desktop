@@ -614,4 +614,60 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dropHint => 'ou déposez un fichier ici';
+
+  @override
+  String get toolbarOpen => 'Ouvrir';
+
+  @override
+  String get toolbarNew => 'Nouveau';
+
+  @override
+  String get restoreReply => 'Restaurer une réponse';
+
+  @override
+  String get findingsTitle => 'Éléments détectés';
+
+  @override
+  String get editorHint =>
+      'Collez ou saisissez du texte, ou déposez un fichier ici';
+
+  @override
+  String get anonymizedEmpty => 'Le texte anonymisé s\'affiche ici';
+
+  @override
+  String statusModel(String name) {
+    return 'Modèle : $name';
+  }
+
+  @override
+  String get statusNoModel => 'Aucun modèle NER';
+
+  @override
+  String statusLanguages(String languages) {
+    return 'Langue : $languages';
+  }
+
+  @override
+  String get historyColumnName => 'Nom';
+
+  @override
+  String get historyColumnType => 'Type';
+
+  @override
+  String get historyColumnFound => 'Détectés';
+
+  @override
+  String get historyColumnUpdated => 'Modifié';
+
+  @override
+  String get kindText => 'Texte';
+
+  @override
+  String get kindFile => 'Fichier';
+
+  @override
+  String get recentTitle => 'Récents';
+
+  @override
+  String get savedToHistory => 'Enregistré dans l\'historique';
 }

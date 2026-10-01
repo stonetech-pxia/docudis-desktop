@@ -28,10 +28,12 @@ abstract final class Clay {
   static const warningText = Color(0xFF7A5A10);
   static const error = Color(0xFFB03A2E);
 
-  static const radius = 22.0;
-  static const controlRadius = 16.0;
-  static const buttonHeight = 52.0;
-  static const tapTarget = 44.0;
+  // Desktop sizes: the phone's 22 / 16 / 52 / 44 read as an app blown up
+  // on a monitor. The colours are the Android app's.
+  static const radius = 12.0;
+  static const controlRadius = 8.0;
+  static const buttonHeight = 34.0;
+  static const tapTarget = 32.0;
   static const pagePadding = EdgeInsets.symmetric(horizontal: 20);
 
   /// One duration and curve for every transition, so they never fight.
@@ -39,15 +41,15 @@ abstract final class Clay {
   static const motionCurve = Curves.easeInOutCubic;
 
   static const shadow = [
-    BoxShadow(color: Color(0x1A785A3C), blurRadius: 30, offset: Offset(0, 10)),
+    BoxShadow(color: Color(0x14785A3C), blurRadius: 10, offset: Offset(0, 2)),
   ];
 
   /// Icon tiles: three round corners and one tighter bottom-left corner.
   static const iconTileRadius = BorderRadius.only(
-    topLeft: Radius.circular(16),
-    topRight: Radius.circular(16),
-    bottomRight: Radius.circular(16),
-    bottomLeft: Radius.circular(6),
+    topLeft: Radius.circular(10),
+    topRight: Radius.circular(10),
+    bottomRight: Radius.circular(10),
+    bottomLeft: Radius.circular(4),
   );
 
   static const headingFamily = 'Sora';
@@ -193,16 +195,16 @@ ThemeData clayTheme() {
   );
 
   final text = TextTheme(
-    displaySmall: Clay.heading(28, letterSpacing: -0.56, height: 1.2),
-    headlineSmall: Clay.heading(22, letterSpacing: -0.44, height: 1.2),
-    titleLarge: Clay.heading(19),
-    titleMedium: Clay.heading(16, weight: FontWeight.w600),
-    titleSmall: Clay.heading(14, weight: FontWeight.w600),
-    bodyLarge: Clay.body(16, height: 1.5),
-    bodyMedium: Clay.body(15, height: 1.5),
-    bodySmall: Clay.body(13, color: Clay.inkCaption, height: 1.4),
-    labelLarge: Clay.heading(16, weight: FontWeight.w600),
-    labelMedium: Clay.body(13, weight: FontWeight.w700, color: Clay.inkMuted),
+    displaySmall: Clay.heading(24, letterSpacing: -0.48, height: 1.2),
+    headlineSmall: Clay.heading(19, letterSpacing: -0.38, height: 1.2),
+    titleLarge: Clay.heading(16),
+    titleMedium: Clay.heading(14, weight: FontWeight.w600),
+    titleSmall: Clay.heading(13, weight: FontWeight.w600),
+    bodyLarge: Clay.body(14, height: 1.5),
+    bodyMedium: Clay.body(13.5, height: 1.5),
+    bodySmall: Clay.body(12, color: Clay.inkCaption, height: 1.4),
+    labelLarge: Clay.heading(13, weight: FontWeight.w600),
+    labelMedium: Clay.body(12, weight: FontWeight.w700, color: Clay.inkMuted),
     labelSmall: Clay.body(
       11,
       weight: FontWeight.w700,
@@ -224,6 +226,7 @@ ThemeData clayTheme() {
 
   return ThemeData(
     useMaterial3: true,
+    visualDensity: VisualDensity.compact,
     colorScheme: scheme,
     scaffoldBackgroundColor: Clay.bg,
     fontFamily: Clay.bodyFamily,
@@ -234,7 +237,7 @@ ThemeData clayTheme() {
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: true,
-      titleTextStyle: Clay.heading(17, weight: FontWeight.w600),
+      titleTextStyle: Clay.heading(14, weight: FontWeight.w600),
     ),
     cardTheme: CardThemeData(
       color: Clay.surface,
@@ -245,6 +248,7 @@ ThemeData clayTheme() {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         minimumSize: const Size(64, Clay.buttonHeight),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         shape: controlShape,
         textStyle: text.labelLarge,
       ),
@@ -252,6 +256,7 @@ ThemeData clayTheme() {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(64, Clay.buttonHeight),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         shape: controlShape,
         textStyle: text.labelLarge,
         foregroundColor: Clay.ink,

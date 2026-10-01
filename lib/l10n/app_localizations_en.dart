@@ -604,4 +604,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dropHint => 'or drop a file here';
+
+  @override
+  String get toolbarOpen => 'Open';
+
+  @override
+  String get toolbarNew => 'New';
+
+  @override
+  String get restoreReply => 'Restore reply';
+
+  @override
+  String get findingsTitle => 'Findings';
+
+  @override
+  String get editorHint => 'Paste or type text, or drop a file here';
+
+  @override
+  String get anonymizedEmpty => 'The anonymized text appears here';
+
+  @override
+  String statusModel(String name) {
+    return 'Model: $name';
+  }
+
+  @override
+  String get statusNoModel => 'No NER model';
+
+  @override
+  String statusLanguages(String languages) {
+    return 'Language: $languages';
+  }
+
+  @override
+  String get historyColumnName => 'Name';
+
+  @override
+  String get historyColumnType => 'Type';
+
+  @override
+  String get historyColumnFound => 'Found';
+
+  @override
+  String get historyColumnUpdated => 'Modified';
+
+  @override
+  String get kindText => 'Text';
+
+  @override
+  String get kindFile => 'File';
+
+  @override
+  String get recentTitle => 'Recent';
+
+  @override
+  String get savedToHistory => 'Saved to history';
 }

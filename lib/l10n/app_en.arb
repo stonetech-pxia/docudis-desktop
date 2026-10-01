@@ -296,5 +296,25 @@
   "resultTextOnlyNote": "Some pages of this PDF have no text (scans), so no PDF copy was made. Only the text below is anonymized.",
   "saveFile": "Save as…",
   "savedFile": "Saved",
-  "dropHint": "or drop a file here"
+  "dropHint": "or drop a file here",
+
+  "toolbarOpen": "Open",
+  "toolbarNew": "New",
+  "restoreReply": "Restore reply",
+  "findingsTitle": "Findings",
+  "editorHint": "Paste or type text, or drop a file here",
+  "anonymizedEmpty": "The anonymized text appears here",
+  "statusModel": "Model: {name}",
+  "@statusModel": {"placeholders": {"name": {"type": "String"}}},
+  "statusNoModel": "No NER model",
+  "statusLanguages": "Language: {languages}",
+  "@statusLanguages": {"placeholders": {"languages": {"type": "String"}}},
+  "historyColumnName": "Name",
+  "historyColumnType": "Type",
+  "historyColumnFound": "Found",
+  "historyColumnUpdated": "Modified",
+  "kindText": "Text",
+  "kindFile": "File",
+  "recentTitle": "Recent",
+  "savedToHistory": "Saved to history"
 }

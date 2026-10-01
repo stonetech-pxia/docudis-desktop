@@ -202,5 +202,23 @@
   "resultTextOnlyNote": "Certaines pages de ce PDF n'ont pas de texte (scans) : aucune copie PDF n'a été faite. Seul le texte ci-dessous est anonymisé.",
   "saveFile": "Enregistrer sous…",
   "savedFile": "Enregistré",
-  "dropHint": "ou déposez un fichier ici"
+  "dropHint": "ou déposez un fichier ici",
+
+  "toolbarOpen": "Ouvrir",
+  "toolbarNew": "Nouveau",
+  "restoreReply": "Restaurer une réponse",
+  "findingsTitle": "Éléments détectés",
+  "editorHint": "Collez ou saisissez du texte, ou déposez un fichier ici",
+  "anonymizedEmpty": "Le texte anonymisé s'affiche ici",
+  "statusModel": "Modèle : {name}",
+  "statusNoModel": "Aucun modèle NER",
+  "statusLanguages": "Langue : {languages}",
+  "historyColumnName": "Nom",
+  "historyColumnType": "Type",
+  "historyColumnFound": "Détectés",
+  "historyColumnUpdated": "Modifié",
+  "kindText": "Texte",
+  "kindFile": "Fichier",
+  "recentTitle": "Récents",
+  "savedToHistory": "Enregistré dans l'historique"
 }

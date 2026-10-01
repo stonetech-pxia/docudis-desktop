@@ -581,4 +581,59 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get dropHint => '或把文件拖到这里';
+
+  @override
+  String get toolbarOpen => '打开';
+
+  @override
+  String get toolbarNew => '新建';
+
+  @override
+  String get restoreReply => '还原回复';
+
+  @override
+  String get findingsTitle => '检测结果';
+
+  @override
+  String get editorHint => '粘贴或输入文字，也可以把文件拖到这里';
+
+  @override
+  String get anonymizedEmpty => '匿名化后的文字会显示在这里';
+
+  @override
+  String statusModel(String name) {
+    return '模型：$name';
+  }
+
+  @override
+  String get statusNoModel => '未安装 NER 模型';
+
+  @override
+  String statusLanguages(String languages) {
+    return '语言：$languages';
+  }
+
+  @override
+  String get historyColumnName => '名称';
+
+  @override
+  String get historyColumnType => '类型';
+
+  @override
+  String get historyColumnFound => '检测数';
+
+  @override
+  String get historyColumnUpdated => '修改时间';
+
+  @override
+  String get kindText => '文本';
+
+  @override
+  String get kindFile => '文件';
+
+  @override
+  String get recentTitle => '最近';
+
+  @override
+  String get savedToHistory => '已保存到历史记录';
 }

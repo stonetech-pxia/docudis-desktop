@@ -1091,6 +1091,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'or drop a file here'**
   String get dropHint;
+
+  /// No description provided for @toolbarOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get toolbarOpen;
+
+  /// No description provided for @toolbarNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get toolbarNew;
+
+  /// No description provided for @restoreReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore reply'**
+  String get restoreReply;
+
+  /// No description provided for @findingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Findings'**
+  String get findingsTitle;
+
+  /// No description provided for @editorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste or type text, or drop a file here'**
+  String get editorHint;
+
+  /// No description provided for @anonymizedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The anonymized text appears here'**
+  String get anonymizedEmpty;
+
+  /// No description provided for @statusModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model: {name}'**
+  String statusModel(String name);
+
+  /// No description provided for @statusNoModel.
+  ///
+  /// In en, this message translates to:
+  /// **'No NER model'**
+  String get statusNoModel;
+
+  /// No description provided for @statusLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Language: {languages}'**
+  String statusLanguages(String languages);
+
+  /// No description provided for @historyColumnName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get historyColumnName;
+
+  /// No description provided for @historyColumnType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get historyColumnType;
+
+  /// No description provided for @historyColumnFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Found'**
+  String get historyColumnFound;
+
+  /// No description provided for @historyColumnUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Modified'**
+  String get historyColumnUpdated;
+
+  /// No description provided for @kindText.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get kindText;
+
+  /// No description provided for @kindFile.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get kindFile;
+
+  /// No description provided for @recentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get recentTitle;
+
+  /// No description provided for @savedToHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to history'**
+  String get savedToHistory;
 }
 
 class _AppLocalizationsDelegate

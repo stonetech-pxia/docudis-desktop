@@ -609,4 +609,59 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dropHint => 'o suelta un archivo aquí';
+
+  @override
+  String get toolbarOpen => 'Abrir';
+
+  @override
+  String get toolbarNew => 'Nuevo';
+
+  @override
+  String get restoreReply => 'Restaurar respuesta';
+
+  @override
+  String get findingsTitle => 'Elementos detectados';
+
+  @override
+  String get editorHint => 'Pega o escribe texto, o suelta un archivo aquí';
+
+  @override
+  String get anonymizedEmpty => 'El texto anonimizado aparece aquí';
+
+  @override
+  String statusModel(String name) {
+    return 'Modelo: $name';
+  }
+
+  @override
+  String get statusNoModel => 'Sin modelo NER';
+
+  @override
+  String statusLanguages(String languages) {
+    return 'Idioma: $languages';
+  }
+
+  @override
+  String get historyColumnName => 'Nombre';
+
+  @override
+  String get historyColumnType => 'Tipo';
+
+  @override
+  String get historyColumnFound => 'Detectados';
+
+  @override
+  String get historyColumnUpdated => 'Modificado';
+
+  @override
+  String get kindText => 'Texto';
+
+  @override
+  String get kindFile => 'Archivo';
+
+  @override
+  String get recentTitle => 'Recientes';
+
+  @override
+  String get savedToHistory => 'Guardado en el historial';
 }
