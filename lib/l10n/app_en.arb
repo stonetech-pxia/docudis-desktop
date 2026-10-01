@@ -1,0 +1,293 @@
+{
+  "@@locale": "en",
+  "appTitle": "Docudis",
+
+  "signInTitle": "Sign in",
+  "signUpTitle": "Create account",
+  "forgotPasswordTitle": "Reset password",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "confirmPasswordLabel": "Confirm password",
+  "signInButton": "Sign in",
+  "signUpButton": "Sign up",
+  "forgotPasswordLink": "Forgot password?",
+  "forgotPasswordHint": "Enter your email address and we will send you a link to reset your password.",
+  "sendResetEmailButton": "Send reset email",
+  "resetEmailSent": "Password reset email sent. Check your inbox.",
+  "continueWithGoogle": "Continue with Google",
+  "continueWithApple": "Sign in with Apple",
+  "orDivider": "or",
+  "noAccountYet": "No account yet?",
+  "alreadyHaveAccount": "Already have an account?",
+  "signOut": "Sign out",
+
+  "validationEmailRequired": "Enter your email address.",
+  "validationEmailInvalid": "Enter a valid email address.",
+  "validationPasswordRequired": "Enter a password.",
+  "validationPasswordTooShort": "Password must be at least {min} characters.",
+  "@validationPasswordTooShort": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "validationPasswordsDoNotMatch": "Passwords do not match.",
+
+  "authErrorInvalidEmail": "The email address is not valid.",
+  "authErrorUserDisabled": "This account has been disabled.",
+  "authErrorUserNotFound": "No account found with this email.",
+  "authErrorWrongPassword": "Incorrect email or password.",
+  "authErrorEmailInUse": "An account already exists with this email.",
+  "authErrorWeakPassword": "The password is too weak.",
+  "authErrorOperationNotAllowed": "This sign-in method is not enabled.",
+  "authErrorTooManyRequests": "Too many attempts. Please try again later.",
+  "authErrorNetwork": "Network error. Check your connection and try again.",
+  "authErrorAccountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
+  "authErrorGeneric": "Something went wrong. Please try again.",
+
+  "homeSignedInAs": "Signed in as {email}",
+  "@homeSignedInAs": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "anonymizeTitle": "Protect",
+  "inputPasteText": "Paste text",
+  "inputPickFile": "Upload a document",
+  "inputTakePhoto": "Scan a photo",
+  "photoFromCamera": "Take a photo",
+  "photoFromLibrary": "Choose from library",
+  "processing": "Reading and anonymizing…",
+  "historyTitle": "History",
+  "historyEmpty": "Nothing processed yet.",
+  "resultTitle": "Protected copy",
+  "tabAnonymized": "Anonymized",
+  "tabOriginal": "Original",
+  "shareFile": "Share file",
+  "sharedImageName": "Anonymized image",
+  "shareText": "Share text",
+  "copy": "Copy",
+  "copied": "Copied.",
+  "detectionCount": "{count, plural, =0{No sensitive items} =1{1 sensitive item} other{{count} sensitive items}}",
+  "@detectionCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "noDetections": "No sensitive information was found.",
+  "delete": "Delete",
+  "deleteRecordConfirm": "Delete this record and its restore key?",
+  "deleteAll": "Delete all",
+  "deleteAllConfirm": "Delete the whole history? This cannot be undone.",
+  "cancel": "Cancel",
+  "restoreTitle": "Restore",
+  "restoreHint": "Paste the AI's reply. Labels are swapped back using the key stored on this phone.",
+  "entityPerson": "Name",
+  "entityEmail": "Email",
+  "entityPhone": "Phone",
+  "entityId": "ID number",
+  "entityCard": "Card number",
+  "entityIban": "IBAN",
+  "entityDate": "Date",
+  "entityAmount": "Amount",
+  "entityIp": "IP address",
+  "entityUrl": "URL",
+  "entityAddress": "Address / place",
+  "entityCompany": "Organization",
+  "entitySecret": "Secret / API key",
+  "entityCustom": "Custom keyword",
+  "entityOther": "Other",
+  "errorNoText": "No text could be read from this input.",
+  "errorUnsupportedFile": "This file type is not supported yet.",
+  "errorProcessingFailed": "Processing failed. Please try again.",
+  "navAccount": "Account",
+  "reviewTitle": "Change what is hidden",
+  "reviewHint": "Tap a label to bring the real text back. Tap a name, a number or any other text to hide it. Saved as you go.",
+  "reviewHideAmounts": "Hide all amounts",
+  "reviewHideDates": "Hide all dates",
+  "reviewNote": "Replaced with labels like [PERSON_1] so AI answers still make sense.",
+  "done": "Done",
+  "resultBanner": "{count, plural, =0{Nothing needed replacing.} =1{1 item replaced.} other{{count} items replaced.}}",
+  "restoreKeyTitle": "Restore key kept on this phone",
+  "restoreKeySubtitle": "{count, plural, =1{1 pair · never uploaded · delete anytime} other{{count} pairs · never uploaded · delete anytime}}",
+  "copyText": "Copy text",
+  "sendTo": "Send to {app}",
+  "aiReplyLabel": "AI reply",
+  "paste": "Paste",
+  "restoredLabel": "Restored",
+  "restoredCount": "{count, plural, =0{No labels found to restore.} =1{1 label restored.} other{{count} labels restored.}}",
+  "restoreDocumentLabel": "Document",
+  "restoreMismatchTitle": "This reply doesn't fit this document",
+  "restoreMismatchBody": "It has labels this document never used: {labels}. It is probably the reply to another document: open that one from History and restore it there.",
+  "@restoreMismatchBody": {
+    "placeholders": {
+      "labels": { "type": "String" }
+    }
+  },
+  "restoreShowAnyway": "Show anyway",
+  "restoreOtherTitle": "This reply seems to be for another document",
+  "restoreOtherBody": "Its labels and wording fit “{name}” better. Restored here, it would get this document's names and numbers.",
+  "@restoreOtherBody": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "restoreUseOther": "Restore with that document",
+  "restoreInvented": "Not in this document, left as is: {labels}",
+  "@restoreInvented": {
+    "placeholders": {
+      "labels": { "type": "String" }
+    }
+  },
+  "restoreShownAnyway": "Restored with this document's key, although the reply fits “{name}” better.",
+  "@restoreShownAnyway": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "copyRestored": "Copy restored text",
+  "@resultBanner": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@restoreKeySubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sendTo": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "@restoredCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "clipboardEmpty": "The clipboard has no text.",
+  "confirm": "Confirm",
+  "homeHeadline": "Protect your personal data by anonymizing it.",
+  "homeCaption": "Runs entirely on this phone. Nothing is uploaded.",
+  "anonymizeButton": "Anonymize",
+  "sendToLabel": "Send to",
+  "otherApps": "Other",
+  "otherAppsTitle": "Other AI apps",
+  "sharedFileName": "Anonymized text",
+  "@sharedFileName": {
+    "description": "Name (without .txt) of the file handed to AI apps and the share sheet."
+  },
+  "sharedDocumentName": "Anonymized document",
+  "@sharedDocumentName": {
+    "description": "Name (without .pdf/.docx) of the redacted copy of a PDF or Word file handed to AI apps and the share sheet."
+  },
+  "clearData": "Clear data on this device",
+  "clearDataHint": "Your latest {count} documents are kept on this device. This deletes them.",
+  "@clearDataHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "clearDataConfirm": "Delete every document processed on this device? This cannot be undone.",
+  "clearDataAction": "Clear",
+  "dataCleared": "Data on this device cleared.",
+  "languageTitle": "Language",
+  "languageSystem": "System default",
+  "dictionaryTitle": "Always hide",
+  "dictionaryHint": "Type what should be hidden in every document, such as your own name, company or address. The list stays on this phone, and you can still show an item again in one document.",
+  "dictionaryEmpty": "Nothing yet. Text you hide by hand will be suggested here.",
+  "dictionaryWords": "{count, plural, =0{No words yet} =1{1 word} other{{count} words}}",
+  "@dictionaryWords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dictionarySuggestions": "{count, plural, =1{1 suggestion} other{{count} suggestions}}",
+  "@dictionarySuggestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dictionarySuggested": "Hidden by hand lately",
+  "dictionarySeeAll": "All",
+  "dictionaryAllTitle": "Hidden by hand",
+  "dictionaryAllHint": "The latest text you hid by hand, up to {count}. Tap one to always hide it.",
+  "@dictionaryAllHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dictionaryAllEmpty": "Nothing to suggest yet.",
+  "dictionaryAdd": "Always hide {term}",
+  "@dictionaryAdd": {
+    "placeholders": {
+      "term": {
+        "type": "String"
+      }
+    }
+  },
+  "dictionaryRemove": "Stop hiding {term}",
+  "@dictionaryRemove": {
+    "placeholders": {
+      "term": {
+        "type": "String"
+      }
+    }
+  },
+  "rename": "Rename",
+  "save": "Save",
+  "moreActions": "More",
+  "dictionaryInputHint": "Name, company, address…",
+  "dictionaryAddButton": "Add",
+  "listOnlyTitle": "Hide only this list",
+  "listOnlyHint": "Turns automatic detection off: nothing else gets hidden.",
+  "listOnlyNeedsWords": "Add a word to the list first.",
+  "listOnlyConfirmTitle": "Hide only this list?",
+  "listOnlyConfirmBody": "Docudis will stop looking for personal details by itself and hide only the words on this list.\n\nCase and accents don't matter, but other spellings do: “Jean Dupont” on the list does not hide “Mr Dupont” or “DUPONT J.”, and a phone number written with other spacing stays visible.\n\nEverything not on the list stays readable, such as other people's names (a doctor, a landlord, a relative), account, reference and case numbers, and dates of birth.\n\nCheck every result before you send it. You can switch this off at any time.",
+  "listOnlyConfirmAction": "Hide only my list",
+  "listOnlyCaption": "only these are hidden",
+  "resultListOnlyNote": "Only your Always hide list was applied. Nothing else was checked: read the text before you send it.",
+  "neverHideTitle": "Never hide",
+  "neverHideHint": "Public names the app hides although they need no hiding, such as a council, a bank or a brand. From the next document on, text in this list stays readable. A longer name or address that contains it is still hidden.",
+  "neverHideEmpty": "Nothing yet. Names you show again by hand will be suggested here.",
+  "neverHideInputHint": "A council, a bank, a brand…",
+  "neverHideSuggested": "Shown again by hand lately",
+  "neverHideAdd": "Never hide {term}",
+  "@neverHideAdd": {
+    "placeholders": {
+      "term": { "type": "String" }
+    }
+  },
+  "neverHideRemove": "Hide {term} again",
+  "@neverHideRemove": {
+    "placeholders": {
+      "term": { "type": "String" }
+    }
+  },
+  "privacyPolicy": "Privacy policy",
+  "privacyPolicyHint": "How your documents are handled",
+  "contactUs": "Contact",
+  "appVersion": "Docudis {version} ({build})",
+  "@appVersion": {
+    "placeholders": {
+      "version": { "type": "String" },
+      "build": { "type": "String" }
+    }
+  }
+}
