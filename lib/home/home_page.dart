@@ -7,9 +7,9 @@ import '../anonymize/ui/workspace_page.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/clay_theme.dart';
 import '../theme/clay_widgets.dart';
-import 'account_page.dart';
+import 'settings_page.dart';
 
-/// App shell, no sign-in: Protect / History / Account behind a side bar on
+/// App shell, no sign-in: Protect / History / Settings behind a side bar on
 /// wide windows and the phone's bottom bar on narrow ones. Each tab keeps
 /// its own page stack, so the restore page opens beside the side bar, not
 /// over it. Opening a record (History, the recent list) shows it in the
@@ -56,14 +56,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     final items = [
       (Icons.verified_user_outlined, l10n.anonymizeTitle),
       (Icons.history_rounded, l10n.historyTitle),
-      (Icons.person_outline_rounded, l10n.navAccount),
+      (Icons.settings_outlined, l10n.navSettings),
     ];
     final pages = IndexedStack(
       index: _index,
       children: [
         _tab(0, const WorkspacePage()),
         _tab(1, const HistoryPage()),
-        _tab(2, const AccountPage()),
+        _tab(2, const SettingsPage()),
       ],
     );
     final wide = MediaQuery.sizeOf(context).width >= HomePage.sideNavMinWidth;

@@ -45,7 +45,7 @@ Future<void> pumpApp(WidgetTester tester, Size size) async {
 }
 
 int shownTab(WidgetTester tester) =>
-    tester.widget<IndexedStack>(find.byType(IndexedStack)).index!;
+    tester.widget<IndexedStack>(find.byType(IndexedStack).first).index!;
 
 void main() {
   testWidgets('wide window uses the side bar and switches tabs', (
@@ -69,7 +69,7 @@ void main() {
     await tester.tap(
       find.descendant(
         of: find.byType(ClaySideNav),
-        matching: find.text('Account'),
+        matching: find.text('Settings'),
       ),
     );
     await tester.pumpAndSettle();
@@ -97,7 +97,7 @@ void main() {
     await tester.tap(
       find.descendant(
         of: find.byType(ClaySideNav),
-        matching: find.text('Account'),
+        matching: find.text('Settings'),
       ),
     );
     await tester.pumpAndSettle();

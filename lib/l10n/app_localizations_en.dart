@@ -659,4 +659,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get savedToHistory => 'Saved to history';
+
+  @override
+  String get navSettings => 'Settings';
+
+  @override
+  String get settingsGeneral => 'General';
+
+  @override
+  String get settingsData => 'Data';
+
+  @override
+  String get settingsAbout => 'About';
+
+  @override
+  String get dataLocation => 'Records are kept in';
+
+  @override
+  String get showInFolder => 'Show in folder';
 }

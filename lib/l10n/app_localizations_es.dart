@@ -664,4 +664,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get savedToHistory => 'Guardado en el historial';
+
+  @override
+  String get navSettings => 'Ajustes';
+
+  @override
+  String get settingsGeneral => 'General';
+
+  @override
+  String get settingsData => 'Datos';
+
+  @override
+  String get settingsAbout => 'Acerca de';
+
+  @override
+  String get dataLocation => 'Los registros se guardan en';
+
+  @override
+  String get showInFolder => 'Mostrar en la carpeta';
 }

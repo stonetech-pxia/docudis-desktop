@@ -183,5 +183,12 @@
   "kindText": "Texto",
   "kindFile": "Archivo",
   "recentTitle": "Recientes",
-  "savedToHistory": "Guardado en el historial"
+  "savedToHistory": "Guardado en el historial",
+
+  "navSettings": "Ajustes",
+  "settingsGeneral": "General",
+  "settingsData": "Datos",
+  "settingsAbout": "Acerca de",
+  "dataLocation": "Los registros se guardan en",
+  "showInFolder": "Mostrar en la carpeta"
 }

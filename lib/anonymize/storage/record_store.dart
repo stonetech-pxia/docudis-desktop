@@ -26,6 +26,9 @@ class RecordStore {
     return _root = dir;
   }
 
+  /// Where the records are, for "Show in folder".
+  Future<Directory> directory() => _rootDir();
+
   Directory _dirFor(Directory root, String id) =>
       Directory(p.join(root.path, id));
 

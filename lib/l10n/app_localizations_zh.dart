@@ -636,4 +636,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get savedToHistory => '已保存到历史记录';
+
+  @override
+  String get navSettings => '设置';
+
+  @override
+  String get settingsGeneral => '通用';
+
+  @override
+  String get settingsData => '数据';
+
+  @override
+  String get settingsAbout => '关于';
+
+  @override
+  String get dataLocation => '记录保存在';
+
+  @override
+  String get showInFolder => '在文件夹中显示';
 }

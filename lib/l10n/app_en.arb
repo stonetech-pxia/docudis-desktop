@@ -316,5 +316,12 @@
   "kindText": "Text",
   "kindFile": "File",
   "recentTitle": "Recent",
-  "savedToHistory": "Saved to history"
+  "savedToHistory": "Saved to history",
+
+  "navSettings": "Settings",
+  "settingsGeneral": "General",
+  "settingsData": "Data",
+  "settingsAbout": "About",
+  "dataLocation": "Records are kept in",
+  "showInFolder": "Show in folder"
 }
