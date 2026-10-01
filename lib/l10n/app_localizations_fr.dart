@@ -593,4 +593,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String appVersion(String version, String build) {
     return 'Docudis $version ($build)';
   }
+
+  @override
+  String get errorNeedsOcr =>
+      'Les images et les pages scannées demandent une reconnaissance de texte, que cette version n\'a pas encore.';
+
+  @override
+  String get noModelNote =>
+      'Le modèle de reconnaissance des noms n\'est pas installé : seules les règles et les listes cherchent les données personnelles, et des noms peuvent passer. Relisez le texte avant de l\'envoyer.';
+
+  @override
+  String get resultTextOnlyNote =>
+      'Certaines pages de ce PDF n\'ont pas de texte (scans) : aucune copie PDF n\'a été faite. Seul le texte ci-dessous est anonymisé.';
+
+  @override
+  String get saveFile => 'Enregistrer sous…';
+
+  @override
+  String get savedFile => 'Enregistré';
+
+  @override
+  String get dropHint => 'ou déposez un fichier ici';
 }

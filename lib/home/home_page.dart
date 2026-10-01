@@ -7,7 +7,9 @@ import '../theme/clay_widgets.dart';
 import 'account_page.dart';
 
 /// App shell, no sign-in: Protect / History / Account behind a side bar on
-/// wide windows and the phone's bottom bar on narrow ones.
+/// wide windows and the phone's bottom bar on narrow ones. Each tab keeps
+/// its own page stack, so a result or review page opens beside the side
+/// bar, not over it.
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -22,7 +24,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _index = 0;
 
-  void _select(int i) => setState(() => _index = i);
+  final _tabs = [for (var i = 0; i < 3; i++) GlobalKey<NavigatorState>()];
+
+  /// Switches tab; choosing the current one again goes back to its first
+  /// page.
+  void _select(int i) {
+    if (i == _index) {
+      _tabs[i].currentState?.popUntil((route) => route.isFirst);
+    } else {
+      setState(() => _index = i);
+    }
+  }
+
+  Widget _tab(int i, Widget page) => Navigator(
+    key: _tabs[i],
+    onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => page),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +51,11 @@ class _HomePageState extends State<HomePage> {
     ];
     final pages = IndexedStack(
       index: _index,
-      children: const [ProtectPage(), HistoryPage(), AccountPage()],
+      children: [
+        _tab(0, const ProtectPage()),
+        _tab(1, const HistoryPage()),
+        _tab(2, const AccountPage()),
+      ],
     );
     final wide = MediaQuery.sizeOf(context).width >= HomePage.sideNavMinWidth;
     if (!wide) {

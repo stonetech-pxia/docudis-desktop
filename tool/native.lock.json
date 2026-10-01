@@ -1,0 +1,26 @@
+{
+  "docudis_core": {
+    "repository": "https://github.com/stonetech-pxia/docudis-core.git",
+    "revision": "740f5f7019e79dc8dd64a70df2c5a7edd143a7a3",
+    "features": "language-id"
+  },
+  "docudis_ner": {
+    "repository": "https://github.com/stonetech-pxia/docudis-ner.git",
+    "revision": "66bd2c6f84c7d3c2561b7cb929978adc1708713f"
+  },
+  "onnxruntime": {
+    "version": "1.30.0",
+    "macos-arm64": {
+      "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.30.0/onnxruntime-osx-arm64-1.30.0.tgz",
+      "sha256": "6ebb5062a934537c352937821f9fe9718e7de1a2db1122a93dd363ffd53a7012"
+    },
+    "windows-x64": {
+      "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.30.0/onnxruntime-win-x64-1.30.0.zip",
+      "sha256": "c6ba983baf5681af108599675d2a89c2d145512d02de28aed0bff177cd0ba949"
+    },
+    "windows-arm64": {
+      "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.30.0/onnxruntime-win-arm64-1.30.0.zip",
+      "sha256": "e53db8a50b23ae35be901cc93428baf997dc8d420333b097b2eae53d3ea9f2d3"
+    }
+  }
+}

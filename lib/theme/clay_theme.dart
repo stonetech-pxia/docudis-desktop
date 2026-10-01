@@ -1,6 +1,5 @@
+import 'package:docudis_ffi/docudis_ffi.dart' show EntityType;
 import 'package:flutter/material.dart';
-
-import '../engine/entity_type.dart';
 
 /// Design tokens for the "Clay" direction. Source of truth: design/README.md
 /// and design/mockups/DirectionClay.dc.html.
@@ -131,11 +130,8 @@ EntityColors entityColors(EntityType type) => switch (type) {
     Color(0xFF7A5A33),
     Color(0xFFB8926A),
   ),
-  EntityType.id || EntityType.number || EntityType.card || EntityType.iban => const EntityColors(
-    Color(0xFFEADFEA),
-    Color(0xFF6A3F73),
-    Color(0xFF8F5E99),
-  ),
+  EntityType.id || EntityType.number || EntityType.card || EntityType.iban =>
+    const EntityColors(Color(0xFFEADFEA), Color(0xFF6A3F73), Color(0xFF8F5E99)),
   EntityType.date || EntityType.birthDate => const EntityColors(
     Color(0xFFF3E8CB),
     Color(0xFF7A5A10),

@@ -1055,6 +1055,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Docudis {version} ({build})'**
   String appVersion(String version, String build);
+
+  /// No description provided for @errorNeedsOcr.
+  ///
+  /// In en, this message translates to:
+  /// **'Pictures and scanned pages need text recognition, which this version doesn\'t have yet.'**
+  String get errorNeedsOcr;
+
+  /// No description provided for @noModelNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The name-recognition model isn\'t installed, so only rules and lists look for personal details. Names are easily missed: read the text before you send it.'**
+  String get noModelNote;
+
+  /// No description provided for @resultTextOnlyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Some pages of this PDF have no text (scans), so no PDF copy was made. Only the text below is anonymized.'**
+  String get resultTextOnlyNote;
+
+  /// No description provided for @saveFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save as…'**
+  String get saveFile;
+
+  /// No description provided for @savedFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get savedFile;
+
+  /// No description provided for @dropHint.
+  ///
+  /// In en, this message translates to:
+  /// **'or drop a file here'**
+  String get dropHint;
 }
 
 class _AppLocalizationsDelegate

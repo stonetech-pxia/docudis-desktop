@@ -195,5 +195,12 @@
   "privacyPolicy": "Politique de confidentialité",
   "privacyPolicyHint": "Comment vos documents sont traités",
   "contactUs": "Contact",
-  "appVersion": "Docudis {version} ({build})"
+  "appVersion": "Docudis {version} ({build})",
+
+  "errorNeedsOcr": "Les images et les pages scannées demandent une reconnaissance de texte, que cette version n'a pas encore.",
+  "noModelNote": "Le modèle de reconnaissance des noms n'est pas installé : seules les règles et les listes cherchent les données personnelles, et des noms peuvent passer. Relisez le texte avant de l'envoyer.",
+  "resultTextOnlyNote": "Certaines pages de ce PDF n'ont pas de texte (scans) : aucune copie PDF n'a été faite. Seul le texte ci-dessous est anonymisé.",
+  "saveFile": "Enregistrer sous…",
+  "savedFile": "Enregistré",
+  "dropHint": "ou déposez un fichier ici"
 }

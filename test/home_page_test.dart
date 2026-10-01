@@ -1,3 +1,8 @@
+import 'package:docudis/anonymize/anonymize_service.dart';
+import 'package:docudis/anonymize/engine/ner_model.dart';
+import 'package:docudis/anonymize/input/text_extractor.dart';
+import 'package:docudis/anonymize/providers.dart';
+import 'package:docudis/anonymize/storage/record_store.dart';
 import 'package:docudis/app.dart';
 import 'package:docudis/preferences.dart';
 import 'package:docudis/theme/clay_widgets.dart';
@@ -5,6 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// No model and no files: the shell is under test, not the engine.
+class _NoModelService extends AnonymizeService {
+  _NoModelService()
+    : super(
+        store: RecordStore(),
+        extractor: TextExtractor(),
+        dictionaryTerms: () async => const [],
+        neverHideTerms: () async => const [],
+      );
+
+  @override
+  Future<NerModel?> nerModel() async => null;
+}
 
 Future<void> pumpApp(WidgetTester tester, Size size) async {
   tester.view.physicalSize = size;
@@ -14,7 +33,11 @@ Future<void> pumpApp(WidgetTester tester, Size size) async {
   final preferences = await SharedPreferences.getInstance();
   await tester.pumpWidget(
     ProviderScope(
-      overrides: [sharedPreferencesProvider.overrideWithValue(preferences)],
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(preferences),
+        anonymizeServiceProvider.overrideWithValue(_NoModelService()),
+        recordsProvider.overrideWith((ref) async => const []),
+      ],
       child: const DocudisApp(),
     ),
   );

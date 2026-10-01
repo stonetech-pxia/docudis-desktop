@@ -562,4 +562,23 @@ class AppLocalizationsZh extends AppLocalizations {
   String appVersion(String version, String build) {
     return 'Docudis $version（$build）';
   }
+
+  @override
+  String get errorNeedsOcr => '图片和扫描页需要文字识别（OCR），这个版本还不支持。';
+
+  @override
+  String get noModelNote => '没有安装识别人名的模型，只用规则和名单查找个人信息，人名很容易漏掉。发送前请先通读一遍。';
+
+  @override
+  String get resultTextOnlyNote =>
+      '这份 PDF 有些页面没有文字（扫描页），所以没有生成 PDF 副本，只有下面的文字做了匿名化。';
+
+  @override
+  String get saveFile => '另存为…';
+
+  @override
+  String get savedFile => '已保存';
+
+  @override
+  String get dropHint => '或把文件拖到这里';
 }
