@@ -16,6 +16,7 @@ lib/
   home/         外层布局：宽窗口用侧边栏，窄于 720 px 时改用底部导航栏
   anonymize/ui/ 保护、历史页面（目前是空壳）
 windows/        Flutter Windows runner
+macos/          Flutter macOS runner（目前用于开发和测试）
 ```
 
 界面代码是从 docudis-android 复制过来的，不和它共享包，Windows 版可以自由改动。
@@ -24,6 +25,7 @@ windows/        Flutter Windows runner
 
 ```bash
 flutter test
+flutter run -d macos
 ```
 
-`flutter build windows` 只能在 Windows 上运行，需要 Visual Studio 的"使用 C++ 的桌面开发"组件。
+在 Mac 上可以直接运行 App，不需要 Apple 开发者账号（Xcode 本地签名）；正式对外发布 Mac 版才需要 Developer ID 签名和公证。`flutter build windows` 只能在 Windows 上运行，需要 Visual Studio 的"使用 C++ 的桌面开发"组件。
