@@ -74,3 +74,13 @@ flutter run -d macos
 - macOS 关掉了 App 沙盒（不上 App Store）。本地运行不需要 Apple 开发者账号；正式对外发布 Mac 版才需要 Developer ID 签名和公证。
 - ONNX Runtime 1.30 没有 Intel Mac 版本，目前只支持 Apple 芯片。
 - Windows：`flutter build windows` 只能在 Windows 上运行，需要 Visual Studio 的"使用 C++ 的桌面开发"组件；原生库的 Windows 构建脚本和打包规则还没写（三个 DLL 放在 exe 旁边即可被找到）。
+
+## 许可证
+
+[GNU AGPL-3.0](LICENSE)，版权归 stonetech 所有，见 [NOTICE](NOTICE)。打包进 App 的 docudis-core 和 docudis-ner 原生库是 Apache-2.0。
+
+需要不受 AGPL 约束的商业授权，请联系 stonetechdigital@gmail.com。
+
+## 参与
+
+欢迎提 issue，但目前不接受代码 PR，见 [CONTRIBUTING.md](CONTRIBUTING.md)。
