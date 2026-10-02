@@ -23,7 +23,7 @@ class _NoModelService extends AnonymizeService {
       );
 
   @override
-  Future<NerModel?> nerModel() async => null;
+  Future<NerModels?> nerModel() async => null;
 }
 
 Future<void> pumpApp(WidgetTester tester, Size size) async {

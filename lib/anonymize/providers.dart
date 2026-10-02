@@ -135,11 +135,12 @@ final anonymizeServiceProvider = Provider<AnonymizeService>((ref) {
   );
 });
 
-/// The loaded NER model's name ("xlm-roberta-base-ner-docudis"); null
-/// when there is none and only rules and lists run.
+/// The loaded NER models' names ("xlm-roberta-base-ner-docudis +
+/// openai-privacy-filter"); null when there is none and only rules and
+/// lists run.
 final nerNameProvider = FutureProvider<String?>((ref) async {
   final model = await ref.watch(anonymizeServiceProvider).nerModel();
-  return model?.name.replaceFirst('ner:', '');
+  return model?.name.replaceAll('ner:', '');
 });
 
 /// The record open in the workspace; null for a new, empty document.

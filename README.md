@@ -52,6 +52,7 @@ tool/fetch_models.sh
 
 - `prepare_native.sh` 按锁定版本拉取并编译 docudis-core（带语言识别）和 docudis-ner，下载并校验 ONNX Runtime，产物放在 `build/native/macos/`，Xcode 构建时会复制进 `Docudis.app/Contents/Frameworks`。有本地 checkout 时可以用 `DOCUDIS_CORE_SOURCE=../docudis-core` / `DOCUDIS_NER_SOURCE=../docudis-ner` 省掉克隆（必须在锁定的 commit 上）。
 - `fetch_models.sh` 把 NER 模型装到 `~/Library/Application Support/com.stonetech.docudis/models/`。模型在私有的 Hugging Face 仓库，需要先 `huggingface-cli login`；已经有模型文件时，先复制到这个目录，脚本校验 SHA-256 通过就不会重新下载。
+- 可选模型 OpenAI Privacy Filter：`tool/fetch_models.sh openai_privacy_filter`（约 950 MB，加载后约 1.6 GB 内存，每 1000 字符约多 0.3 秒）。App 会加载 `models/` 下所有已安装的模型（目前是 `xlmr_ner_docudis` 和 `openai_privacy_filter`），把它们的结果一起交给 core 合并；没装就不加载。
 - 没有模型时 App 照样能用，只是只跑规则和名单，并在页面上提示。
 
 ```bash

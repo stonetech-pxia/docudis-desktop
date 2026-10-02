@@ -155,7 +155,7 @@ Android 的交接文件（`docs/HANDOFF-rust-ner-2026-10-01.md`）列出了 core
 
 - 公开模型，Apache-2.0。总参数约 1.5B（MoE 结构，每次实际参与计算的约 50M），提供 ONNX 和多个量化版本，上下文长度 128k。
 - 输出是 **BIOES 标签，用约束 Viterbi 解码**，覆盖 8 类信息：账号、地址、邮箱、人名、电话、URL、日期、secret。准确的标签名以模型配置为准。
-- 需要在 **docudis-ner** 里做的事：
+- 需要在 **docudis-ner** 里做的事（2026-10-02 已全部完成，见 docudis-ner `6badf8e` 和它的 `models/README.md`；`account_number` 暂不映射）：
   - 实现 BIOES 和 Viterbi 解码（现在只有 BIO 加 argmax）。
   - 给 `ModelSpec`（`model.json`）加 `scheme` / `decoder` 之类的字段。
   - 确认它的 tokenizer 能用 HuggingFace `tokenizers` 加载。

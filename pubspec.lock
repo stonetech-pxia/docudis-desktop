@@ -117,17 +117,17 @@ packages:
     dependency: "direct main"
     description:
       path: "bindings/dart"
-      ref: "740f5f7019e79dc8dd64a70df2c5a7edd143a7a3"
-      resolved-ref: "740f5f7019e79dc8dd64a70df2c5a7edd143a7a3"
+      ref: "73a65b3047bf37678b427d235081ca899f924260"
+      resolved-ref: "73a65b3047bf37678b427d235081ca899f924260"
       url: "https://github.com/stonetech-pxia/docudis-core.git"
     source: git
-    version: "0.1.0"
+    version: "0.2.0"
   docudis_ner_ffi:
     dependency: "direct main"
     description:
       path: "bindings/dart"
-      ref: "66bd2c6f84c7d3c2561b7cb929978adc1708713f"
-      resolved-ref: "66bd2c6f84c7d3c2561b7cb929978adc1708713f"
+      ref: "6badf8e2d2eeea97341c6fedbab5d432b50f59d0"
+      resolved-ref: "6badf8e2d2eeea97341c6fedbab5d432b50f59d0"
       url: "https://github.com/stonetech-pxia/docudis-ner.git"
     source: git
     version: "0.1.0"

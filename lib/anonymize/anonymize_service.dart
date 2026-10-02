@@ -36,13 +36,13 @@ class AnonymizeService {
   /// "Hide only this list"; read at each run.
   final bool Function() listOnly;
 
-  Future<NerModel?>? _ner;
+  Future<NerModels?>? _ner;
 
-  /// Loads the model once. A failure is logged and the model is skipped:
+  /// Loads the models once. A failure is logged and the models are skipped:
   /// the rules, lists and dictionary still run.
-  Future<NerModel?> nerModel() => _ner ??= () async {
+  Future<NerModels?> nerModel() => _ner ??= () async {
     try {
-      final model = await NerModel.load();
+      final model = await NerModels.load();
       debugPrint('[anonymize] NER ready (${model.name})');
       return model;
     } catch (e, st) {
