@@ -14,8 +14,10 @@ import 'native_libraries.dart';
 class NerModels {
   NerModels._(this.models);
 
-  /// Model folders under `<app support>/models`, each holding `model.json`
-  /// and the files it names (installed by tool/fetch_models.sh for now).
+  /// Model folders, each holding `model.json` and the files it names. They
+  /// are looked for under `<app support>/models` (installed by
+  /// tool/fetch_models.sh), then under `models` next to the executable
+  /// (bundled by tool/package_windows.ps1).
   static const folders = ['xlmr_ner_docudis', 'openai_privacy_filter'];
 
   final List<NerModel> models;
@@ -24,14 +26,21 @@ class NerModels {
   /// none is installed or one fails to load.
   static Future<NerModels> load() async {
     final support = await getApplicationSupportDirectory();
+    final roots = [
+      p.join(support.path, 'models'),
+      p.join(p.dirname(Platform.resolvedExecutable), 'models'),
+    ];
     final models = <NerModel>[];
     for (final folder in folders) {
-      final dir = p.join(support.path, 'models', folder);
-      if (!await File(p.join(dir, 'model.json')).exists()) continue;
-      models.add(await NerModel.load(dir));
+      for (final root in roots) {
+        final dir = p.join(root, folder);
+        if (!await File(p.join(dir, 'model.json')).exists()) continue;
+        models.add(await NerModel.load(dir));
+        break;
+      }
     }
     if (models.isEmpty) {
-      throw StateError('no NER model under ${p.join(support.path, 'models')}');
+      throw StateError('no NER model under ${roots.join(' or ')}');
     }
     return NerModels._(models);
   }

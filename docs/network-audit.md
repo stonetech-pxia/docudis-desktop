@@ -105,7 +105,31 @@ APP=/Applications/Docudis.app FLOW=0 IDLE_SECONDS=86400 tool/network_audit_macos
 
 ### 没有系统级的强制
 
-Windows 版目前是普通的桌面程序，打包方式还没定，没有 macOS 那样由系统拦下联网的沙盒。所以 Windows 上靠两层检查：静态检查保证代码和依赖里没有联网的部分，运行中的检查确认实际没有连接。打包方式定下来后，可以再加防火墙规则或 MSIX 沙盒；但沙盒拦不住下文 ONNX Runtime 那种由系统服务代为上传的遥测，那一项靠自己编译 ONNX Runtime 解决。
+Windows 版以解压即用的 zip 发布，是普通的桌面程序，没有 macOS 那样由系统拦下联网的沙盒。所以 Windows 上靠两层检查：静态检查保证代码和依赖里没有联网的部分，运行中的检查确认实际没有连接。想要系统再拦一道的用户，可以自己加一条防火墙规则（见下文）。ONNX Runtime 那种由系统服务代为上传的遥测，沙盒和防火墙都拦不住，靠自己编译 ONNX Runtime 解决。
+
+### 用防火墙再加一道保险（可选）
+
+在管理员 PowerShell 里运行，把路径换成解压后 `docudis.exe` 的完整路径。Windows 防火墙里"阻止"规则优先于"允许"规则，加上后 `docudis.exe` 发出的任何连接都会被系统拦下；设置页打开的链接由浏览器负责，不受影响。
+
+```powershell
+New-NetFirewallRule -DisplayName "Docudis - block outbound" -Direction Outbound -Action Block -Program "C:\Tools\Docudis\docudis.exe"
+```
+
+核对和删除：
+
+```powershell
+Get-NetFirewallRule -DisplayName "Docudis - block outbound" | Get-NetFirewallApplicationFilter
+```
+
+```powershell
+Remove-NetFirewallRule -DisplayName "Docudis - block outbound"
+```
+
+规则按路径生效：把文件夹挪到别处，要按新路径重新加。它只在 Windows Defender 防火墙开着时有效。
+
+### 下载后核对
+
+发布页给出 zip 的 SHA-256（打包时生成的 `.sha256` 文件），下载后用 `Get-FileHash` 核对。zip 由 [tool/package_windows.ps1](../tool/package_windows.ps1) 从源码构建，任何人都可以按 README 自己构建一份。
 
 ### 静态检查
 

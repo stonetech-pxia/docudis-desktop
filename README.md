@@ -99,6 +99,22 @@ flutter run -d windows
 flutter test integration_test/flow_test.dart -d windows
 ```
 
+打包成解压即用的 zip（`build\package\docudis-<版本>-windows-x64.zip` 和它的 `.sha256`）：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tool\package_windows.ps1 -ModelsDir "$env:APPDATA\stonetech\Docudis\models"
+```
+
+- zip 里是 Release 版、三个原生库、Visual C++ 运行库（`windows\CMakeLists.txt` 一起装到 exe 旁边，没装过运行库的电脑也能打开）、LICENSE 和 NOTICE。
+- `-ModelsDir` 把那个目录下的模型放进 zip 的 `models\`，App 在 `<app support>\models` 找不到时会读这里；不加就不带模型，App 只跑规则和名单。
+
+## 在 Windows 上使用
+
+1. 下载 `docudis-<版本>-windows-x64.zip`，核对 SHA-256 和发布页写的一致：`Get-FileHash docudis-<版本>-windows-x64.zip`。
+2. 解压到任意位置，运行里面的 `docudis.exe`。不用安装，也不需要管理员权限；删掉文件夹就是卸载，记录和设置在 `%APPDATA%\stonetech\Docudis\`。
+3. 程序没有代码签名，第一次打开时 Windows 可能提示"Windows 已保护你的电脑"：点"更多信息"，再点"仍要运行"。
+4. 想让 Windows 防火墙也拦住它，可以选做一条规则，见 [docs/network-audit.md](docs/network-audit.md#用防火墙再加一道保险可选)。
+
 ## 许可证
 
 [GNU AGPL-3.0](LICENSE)，版权归 stonetech 所有，见 [NOTICE](NOTICE)。打包进 App 的 docudis-core 和 docudis-ner 原生库是 Apache-2.0。设置页的「开源许可」列出 App 所用第三方软件的许可证，由 `tool/generate_licenses.py` 生成。
