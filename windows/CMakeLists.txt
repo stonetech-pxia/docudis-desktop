@@ -93,6 +93,22 @@ install(DIRECTORY "${NATIVE_ASSETS_DIR}"
    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
    COMPONENT Runtime)
 
+# Docudis's own native libraries, built by tool/prepare_native.ps1. The app
+# loads them from the executable's folder.
+set(DOCUDIS_NATIVE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../build/native/windows")
+set(DOCUDIS_NATIVE_LIBRARIES
+  "${DOCUDIS_NATIVE_DIR}/docudis_capi.dll"
+  "${DOCUDIS_NATIVE_DIR}/docudis_ner_capi.dll"
+  "${DOCUDIS_NATIVE_DIR}/onnxruntime.dll")
+foreach(library ${DOCUDIS_NATIVE_LIBRARIES})
+  if(NOT EXISTS "${library}")
+    message(FATAL_ERROR "${library} is missing; run tool/prepare_native.ps1 first")
+  endif()
+endforeach()
+install(FILES ${DOCUDIS_NATIVE_LIBRARIES}
+  DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  COMPONENT Runtime)
+
 # Fully re-copy the assets directory on each build to avoid having stale files
 # from a previous install.
 set(FLUTTER_ASSET_DIR_NAME "flutter_assets")

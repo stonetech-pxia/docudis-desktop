@@ -117,8 +117,13 @@ Detection _span(String text, String value, EntityType type) {
   );
 }
 
-/// The Rust core built by tool/prepare_native.sh, when it is there.
-final _library = File('build/native/macos/libdocudis_capi.dylib');
+/// The Rust core built by tool/prepare_native.sh (.ps1 on Windows), when it
+/// is there.
+final _library = File(
+  Platform.isWindows
+      ? 'build/native/windows/docudis_capi.dll'
+      : 'build/native/macos/libdocudis_capi.dylib',
+);
 
 final DocudisCore core = DocudisCore.open(_library.absolute.path);
 

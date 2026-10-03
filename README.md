@@ -78,7 +78,25 @@ flutter run -d macos
 
 - macOS 开着 App 沙盒。Release 版没有任何联网权限（Debug 版多一个 `network.server`，让 flutter 工具从本机连进来调试）；App 只能读写用户打开、拖进来或另存为的文件，以及自己的容器。本地运行不需要 Apple 开发者账号；正式对外发布 Mac 版才需要 Developer ID 签名和公证。
 - ONNX Runtime 1.30 没有 Intel Mac 版本，目前只支持 Apple 芯片。
-- Windows：`flutter build windows` 只能在 Windows 上运行，需要 Visual Studio 的"使用 C++ 的桌面开发"组件；原生库的 Windows 构建脚本和打包规则还没写（三个 DLL 放在 exe 旁边即可被找到）。
+
+## 开发（Windows x64）
+
+需要 Visual Studio 的"使用 C++ 的桌面开发"组件、Rust 的 MSVC 工具链，并在系统设置里打开**开发者模式**（Flutter 构建带插件的 App 需要创建符号链接）。第一次需要准备原生库：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tool\prepare_native.ps1
+```
+
+- 和 macOS 的脚本一样按锁定版本编译 docudis-core 和 docudis-ner、下载并校验 ONNX Runtime，产物放在 `build\native\windows\`（`docudis_capi.dll`、`docudis_ner_capi.dll`、`onnxruntime.dll`）。`windows\CMakeLists.txt` 在构建时把它们装到 `docudis.exe` 旁边；缺了就直接报错。App 按完整路径加载，避免拿到系统自带的旧版 `C:\Windows\System32\onnxruntime.dll`。
+- 模型放在 `%APPDATA%\stonetech\Docudis\models\`。`tool/fetch_models.sh` 还不支持 Windows，可以直接调用锁定版本的 docudis-ner 里的脚本（`prepare_native.ps1` 跑过之后源码在 `build\native-cache\src\docudis-ner-<commit>\`）：`python <源码>\tool\fetch_models.py --dest $env:APPDATA\stonetech\Docudis\models`。
+
+```powershell
+flutter run -d windows
+```
+
+```powershell
+flutter test integration_test/flow_test.dart -d windows
+```
 
 ## 许可证
 
