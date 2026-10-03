@@ -8,7 +8,7 @@ Docudis 的 Windows 版（Flutter Desktop，同一份代码也能在 macOS 上�
 
 ## 不联网、不上传
 
-所有处理都在本机完成，没有账户、统计或崩溃上报。macOS 版运行在没有联网权限的 App 沙盒里，并有一个审计脚本记录 App 的全部网络活动。具体承诺、数据存放位置、验证方法和审计结果见 [docs/network-audit.md](docs/network-audit.md)。
+所有处理都在本机完成，没有账户、统计或崩溃上报。macOS 版运行在没有联网权限的 App 沙盒里，并有一个审计脚本记录 App 的全部网络活动。Windows 版由测试检查代码、依赖和打包的文件里没有联网的部分，并在运行中确认 App 没开任何网络连接；ONNX Runtime 从源码编译，不带遥测。具体承诺、数据存放位置、验证方法和审计结果见 [docs/network-audit.md](docs/network-audit.md)。
 
 ## 目前能做的
 
@@ -81,13 +81,14 @@ flutter run -d macos
 
 ## 开发（Windows x64）
 
-需要 Visual Studio 的"使用 C++ 的桌面开发"组件、Rust 的 MSVC 工具链，并在系统设置里打开**开发者模式**（Flutter 构建带插件的 App 需要创建符号链接）。第一次需要准备原生库：
+需要 Visual Studio 的"使用 C++ 的桌面开发"组件（含 CMake）、Rust 的 MSVC 工具链、Python 3，并在系统设置里打开**开发者模式**（Flutter 构建带插件的 App 需要创建符号链接）。第一次需要准备原生库：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tool\prepare_native.ps1
 ```
 
-- 和 macOS 的脚本一样按锁定版本编译 docudis-core 和 docudis-ner、下载并校验 ONNX Runtime，产物放在 `build\native\windows\`（`docudis_capi.dll`、`docudis_ner_capi.dll`、`onnxruntime.dll`）。`windows\CMakeLists.txt` 在构建时把它们装到 `docudis.exe` 旁边；缺了就直接报错。App 按完整路径加载，避免拿到系统自带的旧版 `C:\Windows\System32\onnxruntime.dll`。
+- 按锁定版本编译 docudis-core、docudis-ner 和 ONNX Runtime，产物放在 `build\native\windows\`（`docudis_capi.dll`、`docudis_ner_capi.dll`、`onnxruntime.dll`）。`windows\CMakeLists.txt` 在构建时把它们装到 `docudis.exe` 旁边；缺了就直接报错。App 按完整路径加载，避免拿到系统自带的旧版 `C:\Windows\System32\onnxruntime.dll`。
+- ONNX Runtime 在 Windows 上从官方源码编译，加 `--no_telemetry`：官方发布的 Windows 版把事件登记在微软的遥测组里，创建环境时（在 ort 能关掉遥测之前）就会写下 CPU、内存、显卡驱动等信息，Windows 可能按用户的诊断数据设置上传。第一次编译要较长时间，之后复用 `build\native-cache\ort\` 里的结果；升级时改 `tool/native.lock.json` 里的 commit。`test/offline_test.dart` 会检查打包的文件都不在微软的遥测组里。
 - 模型放在 `%APPDATA%\stonetech\Docudis\models\`。`tool/fetch_models.sh` 还不支持 Windows，可以直接调用锁定版本的 docudis-ner 里的脚本（`prepare_native.ps1` 跑过之后源码在 `build\native-cache\src\docudis-ner-<commit>\`）：`python <源码>\tool\fetch_models.py --dest $env:APPDATA\stonetech\Docudis\models`。
 
 ```powershell

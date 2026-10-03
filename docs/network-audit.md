@@ -1,18 +1,19 @@
 # 不联网、不上传：说明与验证
 
-Docudis 在本机处理文档，不把任何内容发出去。这一页写清楚这句话具体指什么、由什么保证，以及怎样自己验证。macOS 部分已经完成；Windows 的测试和说明待补充。
+Docudis 在本机处理文档，不把任何内容发出去。这一页写清楚这句话具体指什么、由什么保证，以及怎样自己验证。macOS 和 Windows 分开写，因为两边由什么保证、ONNX Runtime 的遥测怎么发出都不一样。
 
 ## 具体承诺
 
 - 识别、匿名化、还原和 NER 模型推理全部在本机运行，处理过程中不发任何网络请求。
 - 没有账户、统计、崩溃上报，也不自动检查更新。
 - App 唯一会触发联网的地方：在设置里点"隐私政策"等链接时，用系统浏览器打开网页。
-- 第三方组件的遥测已关闭，包括 ONNX Runtime 内置的遥测（见下文"发现并修复的问题"）。
+- 第三方组件的遥测已关闭，包括 ONNX Runtime 内置的遥测（见下文两个平台各自的"发现并修复的问题"）。
 
 数据存放在本机：
 
 - 记录（原文、匿名化结果、还原用的对照表，以及导入的文件副本）在 App 的数据目录下的 `records/`，**明文保存**。设置里可以打开这个文件夹，也可以一键清除本机数据。
 - macOS 上的数据目录在 App 的沙盒容器里：`~/Library/Containers/com.stonetech.docudis/Data/Library/Application Support/com.stonetech.docudis/`。
+- Windows 上的数据目录是 `%APPDATA%\stonetech\Docudis\`。
 
 ## macOS
 
@@ -102,4 +103,70 @@ APP=/Applications/Docudis.app FLOW=0 IDLE_SECONDS=86400 tool/network_audit_macos
 
 ## Windows
 
-待补充：测试方法和结果。
+### 没有系统级的强制
+
+Windows 版目前是普通的桌面程序，打包方式还没定，没有 macOS 那样由系统拦下联网的沙盒。所以 Windows 上靠两层检查：静态检查保证代码和依赖里没有联网的部分，运行中的检查确认实际没有连接。打包方式定下来后，可以再加防火墙规则或 MSIX 沙盒；但沙盒拦不住下文 ONNX Runtime 那种由系统服务代为上传的遥测，那一项靠自己编译 ONNX Runtime 解决。
+
+### 静态检查
+
+[test/offline_test.dart](../test/offline_test.dart)，每次 `flutter test` 都会运行：
+
+| 检查 | 方法 | 允许的例外 |
+|---|---|---|
+| App 自己的代码 | 扫描 `lib/` 和 `packages/docudis_pdf/lib`，找联网 API（`HttpClient`、`Socket`、`WebSocket`、域名解析等），以及把网址交给别的程序的调用（`launchUrl`、`openUri`） | 设置页用浏览器打开链接 |
+| Dart 依赖 | 扫描所有依赖包的代码，含联网代码的包必须在审查名单里，并写明为什么没问题 | 例如 `http`：只在 pdfrx 用网址打开 PDF 时用到，App 只打开本地文件；`pdfium_dart` 只在构建时下载 PDFium |
+| Rust 依赖 | 两个原生库的 `Cargo.lock` 里不能有 reqwest、hyper、rustls 等网络库 | 无 |
+| DLL 和 exe 导入的系统库 | 直接读 PE 文件的导入表（含延迟加载），不能导入 `ws2_32`、`winhttp`、`wininet` 等网络库 | `flutter_windows.dll` |
+| 微软遥测组 | 打包的文件不能把 ETW 事件登记在微软的遥测组里（见下文） | 无 |
+
+每项检查都做过反向验证：故意放进一个违规项，确认检查会失败。
+
+打包的文件导入了哪些网络相关的系统库：
+
+| 文件 | 网络相关的导入 |
+|---|---|
+| docudis_capi.dll（docudis-core） | 无 |
+| docudis_ner_capi.dll（docudis-ner） | 无 |
+| onnxruntime.dll | 无 |
+| pdfium.dll | 无 |
+| 插件（desktop_drop、url_launcher、dartjni）和 docudis.exe | 无 |
+| flutter_windows.dll | `ws2_32`、`iphlpapi`：这是 Dart `dart:io` 自带的，只说明有联网能力；第一项检查保证 App 的代码不用它 |
+
+### 运行中的检查
+
+集成测试 [integration_test/flow_test.dart](../integration_test/flow_test.dart) 在 Windows 上运行时，一个后台线程每隔几毫秒读一次系统的 TCP 和 UDP 连接表（`GetExtendedTcpTable`、`GetExtendedUdpTable`），记下 App 进程拥有的每个连接，覆盖粘贴 → 匿名化 → 审阅 → 还原、词典、PDF、Word 的整个流程，用的是真实的原生库和模型。测试开始前就已经在本机回环上监听的端口是 Dart 的调试服务，测试工具通过它控制 App，这部分不算。
+
+```powershell
+flutter test integration_test/flow_test.dart -d windows
+```
+
+局限：
+
+- 两次读取之间开了又关的连接可能漏掉。读取足够频繁，任何要等网络回应的连接都会被看到。对照测试里故意打开一个 UDP 端口、连一个不会回应的地址，两者都被抓到了。
+- 只看 App 自己的进程。借系统服务发出的数据（比如下文的 ETW 遥测）看不到，这类靠静态检查。
+- 测的是 Debug 版。
+
+### 结果
+
+2026-10-03，Windows 11（10.0.26200，x64），docudis-ner `b18d618`，ONNX Runtime 1.30.0（从源码编译，不带遥测）：
+
+| 检查 | 结果 |
+|---|---|
+| 静态检查 | 5 项全部通过 |
+| App 进程打开的连接 | 0 |
+| 集成测试 | 3 项全部通过 |
+
+### 发现并修复的问题：ONNX Runtime 遥测
+
+Windows 上的情况和 macOS 不一样：
+
+- 官方 Windows 版的 ONNX Runtime 自己不联网：不导入网络库，也没有上传地址。它把事件写进 Windows 的事件系统（ETW），并把事件来源登记在微软的遥测组里。是否上传、什么时候上传，由 Windows 的诊断服务（DiagTrack）按用户的诊断数据设置决定。
+- 用 ETW 录制实测：Docudis 每次创建 ONNX Runtime 环境时写出 4 条事件：ProcessInfo（ONNX Runtime 版本、CPU 型号、核心数、内存大小、是否挂着调试器）、DriverInfo（显卡型号和驱动版本），以及加载 CPU 计算模块的开始和结果。**不包含文档内容**。按事件上的标记，它们属于"可选诊断数据"。
+- `with_telemetry(false)` 关不掉这 4 条：它们在创建环境时就写出了，早于关闭。之后的事件（比如创建会话）确实没再出现。
+- `ORT_DISABLE_TELEMETRY` 在 Windows 上无效：Windows 版里根本没有这个变量。用 Python 版 ONNX Runtime 对照，设和不设写出的事件一样。
+- 运行中的检查和沙盒都拦不住：上传的是系统服务，不是 App 进程。
+
+修复：Windows 上的 `onnxruntime.dll` 改为从官方源码编译（锁定 v1.30.0 的 commit），加 `--no_telemetry`，见 [tool/prepare_native.ps1](../tool/prepare_native.ps1)。这样编出来的版本仍然会写事件，但不再登记在遥测组里，Windows 的诊断服务不会收集它们。
+
+- 遥测组的标记在官方 DLL 里有 1 处，自己编译的版本里 0 处。静态检查的"微软遥测组"一项保证以后不会换回官方版。
+- 用 docudis-android 的 201 段测试文本对比 NER 结果：官方版和自己编译的版本得出的 3612 处识别（含置信度）完全一致。

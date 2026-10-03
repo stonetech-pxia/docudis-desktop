@@ -10,17 +10,11 @@
   },
   "onnxruntime": {
     "version": "1.30.0",
+    "repository": "https://github.com/microsoft/onnxruntime.git",
+    "revision": "f2c39fe2f838cf35ce7da92824f5a5e3ee6e88a7",
     "macos-arm64": {
       "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.30.0/onnxruntime-osx-arm64-1.30.0.tgz",
       "sha256": "6ebb5062a934537c352937821f9fe9718e7de1a2db1122a93dd363ffd53a7012"
-    },
-    "windows-x64": {
-      "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.30.0/onnxruntime-win-x64-1.30.0.zip",
-      "sha256": "c6ba983baf5681af108599675d2a89c2d145512d02de28aed0bff177cd0ba949"
-    },
-    "windows-arm64": {
-      "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.30.0/onnxruntime-win-arm64-1.30.0.zip",
-      "sha256": "e53db8a50b23ae35be901cc93428baf997dc8d420333b097b2eae53d3ea9f2d3"
     }
   }
 }

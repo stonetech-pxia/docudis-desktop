@@ -2,9 +2,11 @@
 // installed NER model (tool/prepare_native.sh, tool/fetch_models.sh):
 //
 //   flutter test integration_test/flow_test.dart -d macos
+//   flutter test integration_test/flow_test.dart -d windows
 //
 // Records and the dictionary lists go to a temporary folder, not the
-// app's own.
+// app's own. On Windows the run also checks that the app opened no
+// network socket all along.
 
 import 'dart:convert';
 import 'dart:io';
@@ -27,6 +29,7 @@ import 'package:pdfrx/pdfrx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fixtures/letter_pdf.dart';
+import 'network_monitor.dart';
 
 const _pasted =
     "Hi, I'm Sarah Meyer from Lyon. Call me on +33 6 12 34 56 78 or write to "
@@ -63,6 +66,11 @@ Future<void> _waitFor(WidgetTester tester, Finder finder) async {
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  NetworkMonitor? network;
+  setUpAll(() async {
+    if (Platform.isWindows) network = await NetworkMonitor.start();
+  });
 
   setUp(() async {
     _records = await Directory.systemTemp.createTemp('docudis-records-');
@@ -214,6 +222,13 @@ void main() {
     expect(text, isNot(contains('sarah.meyer@example.fr')));
     expect(text, contains('[EMAIL_1]'));
   });
+
+  // Last, so it covers every test above.
+  test(
+    'the app opened no network socket',
+    () async => expect(await network!.stop(), isEmpty),
+    skip: Platform.isWindows ? false : 'reads the Windows socket tables',
+  );
 }
 
 /// A minimal Word file holding [_pasted].
