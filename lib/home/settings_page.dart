@@ -15,8 +15,7 @@ import '../theme/clay_theme.dart';
 import '../theme/clay_widgets.dart';
 import 'app_locale.dart';
 
-const privacyPolicyUrl =
-    'https://stonetech-pxia.github.io/docudis-site/privacy/';
+const privacyPolicyUrl = 'https://docudis.com/privacy/';
 const contactEmail = 'stonetechdigital@gmail.com';
 
 final _versionProvider = FutureProvider<PackageInfo>(

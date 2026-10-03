@@ -15,6 +15,7 @@ void main() {
       expect(
         packages,
         containsAll([
+          'Docudis',
           'docudis-core',
           'docudis-ner',
           'ort',

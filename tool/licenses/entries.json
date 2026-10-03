@@ -1,6 +1,15 @@
 [
  {
   "packages": [
+   "Docudis"
+  ],
+  "files": [
+   "NOTICE",
+   "LICENSE"
+  ]
+ },
+ {
+  "packages": [
    "ONNX Runtime"
   ],
   "files": [

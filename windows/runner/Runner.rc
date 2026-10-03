@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.stonetech" "\0"
+            VALUE "CompanyName", "stonetech" "\0"
             VALUE "FileDescription", "Docudis" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "docudis" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.stonetech. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 stonetech. Licensed under the GNU AGPL-3.0." "\0"
             VALUE "OriginalFilename", "docudis.exe" "\0"
             VALUE "ProductName", "Docudis" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

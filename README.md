@@ -1,4 +1,4 @@
-# Docudis for Windows
+# Docudis Desktop
 
 Docudis 的 Windows 版（Flutter Desktop，同一份代码也能在 macOS 上运行）。在本机识别并匿名化文本、PDF、Word 文档和图片，不上传任何内容。功能基准是 [docudis-android](https://github.com/stonetech-pxia/docudis-android)，架构和待定事项见 [HANDOFF-windows-2026-10-01.md](HANDOFF-windows-2026-10-01.md)。
 
