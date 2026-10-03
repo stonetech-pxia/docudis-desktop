@@ -6,6 +6,7 @@
 // Records and the dictionary lists go to a temporary folder, not the
 // app's own.
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
@@ -24,6 +25,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'fixtures/letter_pdf.dart';
 
 const _pasted =
     "Hi, I'm Sarah Meyer from Lyon. Call me on +33 6 12 34 56 78 or write to "
@@ -179,11 +182,10 @@ void main() {
     final container = await _pumpApp(tester);
     final service = container.read(anonymizeServiceProvider);
 
+    final pdfPath = '${_records.path}/letter.pdf';
+    await File(pdfPath).writeAsBytes(base64Decode(letterPdfBase64));
     final pdfRecord = await service.process(
-      FileInput(
-        path: File('integration_test/fixtures/letter.pdf').absolute.path,
-        name: 'letter.pdf',
-      ),
+      FileInput(path: pdfPath, name: 'letter.pdf'),
     );
     final pdf = await container.read(recordStoreProvider).load(pdfRecord.id);
     expect(pdf.output, isNot(contains('Eleanor Whitcombe')));

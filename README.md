@@ -6,6 +6,10 @@ Docudis 的 Windows 版（Flutter Desktop，同一份代码也能在 macOS 上�
 - 界面语言：English、Español、Français、中文（默认跟随系统）
 - 引擎：检测、合并、匿名化、还原、语言识别全部走 docudis-core，NER 走 docudis-ner（都是 Rust，经 C ABI 调用）。版本锁定在 [tool/native.lock.json](tool/native.lock.json)，Dart 绑定在 `pubspec.yaml` 里按同一个 commit 引用。
 
+## 不联网、不上传
+
+所有处理都在本机完成，没有账户、统计或崩溃上报。macOS 版运行在没有联网权限的 App 沙盒里，并有一个审计脚本记录 App 的全部网络活动。具体承诺、数据存放位置、验证方法和审计结果见 [docs/network-audit.md](docs/network-audit.md)。
+
 ## 目前能做的
 
 桌面式的界面，颜色沿用 Android 的 Clay：
@@ -32,7 +36,8 @@ lib/
     storage/          历史记录（<app support>/records，和 Android 同样的格式，明文）
     ui/               工作区（原文、匿名化结果、检测结果）、还原、历史页面
 packages/docudis_pdf/ PDF 匿名化（从 docudis-android 复制）
-tool/                 原生库构建、模型安装、版本锁定
+tool/                 原生库构建、模型安装、版本锁定、联网审计
+docs/                 不联网、不上传的说明和审计结果
 windows/  macos/      Flutter runner
 ```
 
@@ -51,7 +56,7 @@ tool/fetch_models.sh
 ```
 
 - `prepare_native.sh` 按锁定版本拉取并编译 docudis-core（带语言识别）和 docudis-ner，下载并校验 ONNX Runtime，产物放在 `build/native/macos/`，Xcode 构建时会复制进 `Docudis.app/Contents/Frameworks`。有本地 checkout 时可以用 `DOCUDIS_CORE_SOURCE=../docudis-core` / `DOCUDIS_NER_SOURCE=../docudis-ner` 省掉克隆（必须在锁定的 commit 上）。
-- `fetch_models.sh` 把 NER 模型装到 `~/Library/Application Support/com.stonetech.docudis/models/`。模型在私有的 Hugging Face 仓库，需要先 `huggingface-cli login`；已经有模型文件时，先复制到这个目录，脚本校验 SHA-256 通过就不会重新下载。
+- `fetch_models.sh` 把 NER 模型装到 App 沙盒容器里的 `~/Library/Containers/com.stonetech.docudis/Data/Library/Application Support/com.stonetech.docudis/models/`。容器由 macOS 在 App 第一次启动时创建，所以先 `flutter run -d macos` 打开一次再运行它。模型在私有的 Hugging Face 仓库，需要先 `huggingface-cli login`；已经有模型文件时，先复制到这个目录，脚本校验 SHA-256 通过就不会重新下载。
 - 可选模型 OpenAI Privacy Filter：`tool/fetch_models.sh openai_privacy_filter`（约 950 MB，加载后约 1.6 GB 内存，每 1000 字符约多 0.3 秒）。App 会加载 `models/` 下所有已安装的模型（目前是 `xlmr_ner_docudis` 和 `openai_privacy_filter`），把它们的结果一起交给 core 合并；没装就不加载。
 - 没有模型时 App 照样能用，只是只跑规则和名单，并在页面上提示。
 
@@ -71,7 +76,7 @@ flutter run -d macos
 
 说明：
 
-- macOS 关掉了 App 沙盒（不上 App Store）。本地运行不需要 Apple 开发者账号；正式对外发布 Mac 版才需要 Developer ID 签名和公证。
+- macOS 开着 App 沙盒。Release 版没有任何联网权限（Debug 版多一个 `network.server`，让 flutter 工具从本机连进来调试）；App 只能读写用户打开、拖进来或另存为的文件，以及自己的容器。本地运行不需要 Apple 开发者账号；正式对外发布 Mac 版才需要 Developer ID 签名和公证。
 - ONNX Runtime 1.30 没有 Intel Mac 版本，目前只支持 Apple 芯片。
 - Windows：`flutter build windows` 只能在 Windows 上运行，需要 Visual Studio 的"使用 C++ 的桌面开发"组件；原生库的 Windows 构建脚本和打包规则还没写（三个 DLL 放在 exe 旁边即可被找到）。
 

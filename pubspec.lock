@@ -126,8 +126,8 @@ packages:
     dependency: "direct main"
     description:
       path: "bindings/dart"
-      ref: "7b33900f8665ec25c22be75523d0410040e4e0ee"
-      resolved-ref: "7b33900f8665ec25c22be75523d0410040e4e0ee"
+      ref: b18d61855f20667c5dd59f2fa7a95573fe59d7ee
+      resolved-ref: b18d61855f20667c5dd59f2fa7a95573fe59d7ee
       url: "https://github.com/stonetech-pxia/docudis-ner.git"
     source: git
     version: "0.1.0"

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Installs the NER model where the app looks for it: <app support>/models,
-# i.e. ~/Library/Application Support/com.stonetech.docudis/models on macOS.
+# Installs the NER model where the app looks for it: <app support>/models.
+# On macOS the app is sandboxed, so that is inside its container:
+# ~/Library/Containers/com.stonetech.docudis/Data/Library/Application Support/com.stonetech.docudis/models.
 # Each model.json and its binaries come from the docudis-ner revision pinned
 # in tool/native.lock.json and are checked against its manifest's SHA-256.
 #
@@ -30,9 +31,14 @@ while [[ $# -gt 0 ]]; do
 done
 if [[ -z "$dest" ]]; then
   case "$(uname -s)" in
-    Darwin) dest="$HOME/Library/Application Support/com.stonetech.docudis/models" ;;
+    Darwin) dest="$HOME/Library/Containers/com.stonetech.docudis/Data/Library/Application Support/com.stonetech.docudis/models" ;;
     *) echo "pass --dest on this platform" >&2; exit 2 ;;
   esac
+  # Let macOS create the container itself rather than making it here.
+  if [[ ! -f "$HOME/Library/Containers/com.stonetech.docudis/.com.apple.containermanagerd.metadata.plist" ]]; then
+    echo "open Docudis once (flutter run -d macos) so macOS creates its container, then run this again" >&2
+    exit 1
+  fi
 fi
 
 source_dir="$repo_root/build/native-cache/src/docudis-ner-$revision"
