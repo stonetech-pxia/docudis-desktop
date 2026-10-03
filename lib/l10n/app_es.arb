@@ -158,6 +158,8 @@
   "privacyPolicy": "Política de privacidad",
   "privacyPolicyHint": "Cómo se tratan tus documentos",
   "contactUs": "Contacto",
+  "openSourceLicenses": "Licencias de código abierto",
+  "openSourceLicensesHint": "Las licencias de Docudis y del software que utiliza",
   "appVersion": "Docudis {version} ({build})",
 
   "errorNeedsOcr": "Las imágenes y las páginas escaneadas necesitan reconocimiento de texto, que esta versión aún no tiene.",

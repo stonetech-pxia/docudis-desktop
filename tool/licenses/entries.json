@@ -1,0 +1,63 @@
+[
+ {
+  "packages": [
+   "ONNX Runtime"
+  ],
+  "files": [
+   "tool/licenses/onnxruntime/LICENSE",
+   "tool/licenses/onnxruntime/ThirdPartyNotices.txt"
+  ]
+ },
+ {
+  "packages": [
+   "PDFium"
+  ],
+  "files": [
+   "tool/licenses/pdfium/LICENSE",
+   "tool/licenses/pdfium/pdfium.txt",
+   "tool/licenses/pdfium/abseil.txt",
+   "tool/licenses/pdfium/agg23.txt",
+   "tool/licenses/pdfium/catapult.txt",
+   "tool/licenses/pdfium/cpu_features.txt",
+   "tool/licenses/pdfium/fast_float.txt",
+   "tool/licenses/pdfium/freetype.txt",
+   "tool/licenses/pdfium/icu.txt",
+   "tool/licenses/pdfium/lcms.txt",
+   "tool/licenses/pdfium/libjpeg_turbo.ijg",
+   "tool/licenses/pdfium/libjpeg_turbo.md",
+   "tool/licenses/pdfium/libopenjpeg.txt",
+   "tool/licenses/pdfium/libpng.txt",
+   "tool/licenses/pdfium/libtiff.txt",
+   "tool/licenses/pdfium/libunwind.txt",
+   "tool/licenses/pdfium/llvm-libc.txt",
+   "tool/licenses/pdfium/simdutf.txt",
+   "tool/licenses/pdfium/zlib.txt"
+  ]
+ },
+ {
+  "packages": [
+   "Docudis name-recognition model"
+  ],
+  "files": [
+   "tool/licenses/model/NOTICE",
+   "tool/licenses/model/AFL-3.0.txt",
+   "tool/licenses/model/xlm-roberta-LICENSE"
+  ]
+ },
+ {
+  "packages": [
+   "Sora font"
+  ],
+  "files": [
+   "assets/fonts/OFL-Sora.txt"
+  ]
+ },
+ {
+  "packages": [
+   "Karla font"
+  ],
+  "files": [
+   "assets/fonts/OFL-Karla.txt"
+  ]
+ }
+]

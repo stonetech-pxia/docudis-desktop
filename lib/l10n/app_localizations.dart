@@ -1050,6 +1050,18 @@ abstract class AppLocalizations {
   /// **'Contact'**
   String get contactUs;
 
+  /// No description provided for @openSourceLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licenses'**
+  String get openSourceLicenses;
+
+  /// No description provided for @openSourceLicensesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The licenses of Docudis and the software it uses'**
+  String get openSourceLicensesHint;
+
   /// No description provided for @appVersion.
   ///
   /// In en, this message translates to:

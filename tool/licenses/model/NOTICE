@@ -1,0 +1,18 @@
+Docudis name-recognition model (xlmr_ner_docudis)
+Copyright 2026 stonetech
+
+Licensed under the Academic Free License version 3.0.
+
+This model is a Derivative Work of Davlan/xlm-roberta-base-ner-hrl
+(https://huggingface.co/Davlan/xlm-roberta-base-ner-hrl), licensed under the
+Academic Free License version 3.0, which is fine-tuned from
+FacebookAI/xlm-roberta-base (MIT License, Copyright (c) Facebook, Inc. and its
+affiliates). stonetech modified it by fine-tuning it on additional data and
+quantizing it.
+
+The additional training data includes information from:
+- BODACC, Direction de l'information légale et administrative (DILA),
+  under the Licence Ouverte 2.0.
+- BORME, Agencia Estatal Boletín Oficial del Estado (www.boe.es).
+- The Gazette (www.thegazette.co.uk), Crown copyright, under the Open
+  Government Licence v3.0.

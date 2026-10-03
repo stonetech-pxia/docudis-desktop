@@ -6,7 +6,7 @@
   },
   "docudis_ner": {
     "repository": "https://github.com/stonetech-pxia/docudis-ner.git",
-    "revision": "6badf8e2d2eeea97341c6fedbab5d432b50f59d0"
+    "revision": "7b33900f8665ec25c22be75523d0410040e4e0ee"
   },
   "onnxruntime": {
     "version": "1.30.0",

@@ -10,6 +10,7 @@ import '../anonymize/anonymize_service.dart';
 import '../anonymize/providers.dart';
 import '../anonymize/ui/anonymize_messages.dart';
 import '../l10n/app_localizations.dart';
+import '../licenses.dart';
 import '../theme/clay_theme.dart';
 import '../theme/clay_widgets.dart';
 import 'app_locale.dart';
@@ -36,7 +37,8 @@ const _languages = [
 
 /// Settings tab, as a desktop preferences page: general (interface
 /// language), data (where records are, clearing them) and about (privacy
-/// policy, contact, version). No account: Docudis has none.
+/// policy, contact, open-source licenses, version). No account: Docudis has
+/// none.
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
@@ -184,6 +186,21 @@ class SettingsPage extends ConsumerWidget {
                       context,
                       Uri(scheme: 'mailto', path: contactEmail),
                       contactEmail,
+                    ),
+                  ),
+                  _Row(
+                    label: l10n.openSourceLicenses,
+                    detail: l10n.openSourceLicensesHint,
+                    trailing: const Icon(
+                      Icons.chevron_right_rounded,
+                      size: 18,
+                      color: Clay.inkCaption,
+                    ),
+                    onTap: () => showLicensePage(
+                      context: context,
+                      applicationName: 'Docudis',
+                      applicationVersion: version?.version,
+                      applicationLegalese: appLegalese,
                     ),
                   ),
                   if (version != null)

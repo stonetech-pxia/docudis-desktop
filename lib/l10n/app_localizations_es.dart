@@ -585,6 +585,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get contactUs => 'Contacto';
 
   @override
+  String get openSourceLicenses => 'Licencias de código abierto';
+
+  @override
+  String get openSourceLicensesHint =>
+      'Las licencias de Docudis y del software que utiliza';
+
+  @override
   String appVersion(String version, String build) {
     return 'Docudis $version ($build)';
   }

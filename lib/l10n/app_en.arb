@@ -283,6 +283,8 @@
   "privacyPolicy": "Privacy policy",
   "privacyPolicyHint": "How your documents are handled",
   "contactUs": "Contact",
+  "openSourceLicenses": "Open-source licenses",
+  "openSourceLicensesHint": "The licenses of Docudis and the software it uses",
   "appVersion": "Docudis {version} ({build})",
   "@appVersion": {
     "placeholders": {

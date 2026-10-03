@@ -17,7 +17,7 @@ dependencies:
   docudis_ner_ffi:
     git:
       url: https://github.com/stonetech-pxia/docudis-ner.git
-      ref: 6badf8e2d2eeea97341c6fedbab5d432b50f59d0
+      ref: 7b33900f8665ec25c22be75523d0410040e4e0ee
       path: bindings/dart
   docudis_pdf:
     path: packages/docudis_pdf
@@ -46,6 +46,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/licenses/
   fonts:
     - family: Sora
       fonts:

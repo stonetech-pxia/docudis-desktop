@@ -559,6 +559,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get contactUs => '联系我们';
 
   @override
+  String get openSourceLicenses => '开源许可';
+
+  @override
+  String get openSourceLicensesHint => 'Docudis 及其所用软件的许可证';
+
+  @override
   String appVersion(String version, String build) {
     return 'Docudis $version（$build）';
   }

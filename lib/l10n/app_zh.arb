@@ -195,6 +195,8 @@
   "privacyPolicy": "隐私政策",
   "privacyPolicyHint": "你的文档如何处理",
   "contactUs": "联系我们",
+  "openSourceLicenses": "开源许可",
+  "openSourceLicensesHint": "Docudis 及其所用软件的许可证",
   "appVersion": "Docudis {version}（{build}）",
 
   "errorNeedsOcr": "图片和扫描页需要文字识别（OCR），这个版本还不支持。",

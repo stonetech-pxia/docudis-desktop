@@ -77,7 +77,7 @@ flutter run -d macos
 
 ## 许可证
 
-[GNU AGPL-3.0](LICENSE)，版权归 stonetech 所有，见 [NOTICE](NOTICE)。打包进 App 的 docudis-core 和 docudis-ner 原生库是 Apache-2.0。
+[GNU AGPL-3.0](LICENSE)，版权归 stonetech 所有，见 [NOTICE](NOTICE)。打包进 App 的 docudis-core 和 docudis-ner 原生库是 Apache-2.0。设置页的「开源许可」列出 App 所用第三方软件的许可证，由 `tool/generate_licenses.py` 生成。
 
 需要不受 AGPL 约束的商业授权，请联系 stonetechdigital@gmail.com。
 
