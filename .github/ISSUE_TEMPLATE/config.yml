@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem privately
+    url: https://github.com/stonetech-pxia/docudis-desktop/security/advisories/new
+    about: Content leaving the computer, unmasked output, or anything else that should not be public.

@@ -1,0 +1,19 @@
+name: Feature request
+description: Something Docudis should do.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Never include real personal data or real documents; issues are public.
+  - type: textarea
+    id: need
+    attributes:
+      label: What you want to do
+      description: The task you have in mind, and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How Docudis could help
