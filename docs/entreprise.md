@@ -9,6 +9,7 @@ Docudis est un logiciel libre publié par un développeur indépendant, Pengda X
 - Code source : <https://github.com/stonetech-pxia/docudis-desktop>
 - Contact : stonetechdigital@gmail.com
 - Signaler une vulnérabilité : [SECURITY.md](../SECURITY.md)
+- Politique de confidentialité : <https://docudis.com/privacy/desktop/>
 
 ## Ce que fait l'application
 
@@ -44,9 +45,10 @@ Docudis enregistre ses données dans `%APPDATA%\stonetech\Docudis\` (sous macOS 
 | `models\` | Modèles de reconnaissance des noms installés séparément (facultatif). |
 | réglages | Langue de l'interface et options. |
 
-**Ces données sont enregistrées en clair, sans chiffrement propre à l'application.** Elles contiennent les documents d'origine. Nous recommandons :
+**Ces données sont enregistrées en clair, sans chiffrement propre à l'application.** Elles contiennent les documents d'origine. Docudis n'exclut pas ce dossier des sauvegardes : les profils itinérants (`%APPDATA%` est le dossier Roaming), la redirection de dossiers et les sauvegardes du poste peuvent le copier sur un serveur. Nous recommandons :
 
 - le chiffrement du disque (BitLocker, FileVault) ;
+- avec des profils itinérants, d'exclure `AppData\Roaming\stonetech\Docudis` de la synchronisation (stratégie de groupe « Exclure des répertoires du profil itinérant ») ;
 - le bouton « Effacer les données de l'appareil » dans les réglages, qui supprime tous les documents traités (les listes et les réglages restent) ;
 - pour désinstaller : supprimer le dossier de l'application, puis `%APPDATA%\stonetech\Docudis\`.
 
