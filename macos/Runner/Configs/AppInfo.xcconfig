@@ -11,7 +11,7 @@ PRODUCT_NAME = Docudis
 PRODUCT_BUNDLE_IDENTIFIER = com.stonetech.docudis
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 stonetech. Licensed under the GNU AGPL-3.0.
+PRODUCT_COPYRIGHT = Copyright © 2026 Pengda Xia (stonetech). Licensed under the GNU AGPL-3.0.
 
 // Apple silicon only: ONNX Runtime 1.30 and the Rust libraries in
 // build/native/macos are arm64, so an x86_64 slice could not load them.

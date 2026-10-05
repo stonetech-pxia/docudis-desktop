@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 /// Shown on the licenses page under the app's own name.
 const appLegalese =
-    'Copyright 2026 stonetech\n\n'
+    'Copyright 2026 Pengda Xia (stonetech)\n\n'
     'Docudis is free software under the GNU Affero General Public License, '
     'version 3, and comes with no warranty. Source code: '
     'https://github.com/stonetech-pxia/docudis-desktop';

@@ -128,7 +128,13 @@ powershell -ExecutionPolicy Bypass -File tool\package_windows.ps1 -ModelsDir "$e
 
 ## 许可证
 
-[GNU AGPL-3.0](LICENSE)，版权归 stonetech 所有，见 [NOTICE](NOTICE)。打包进 App 的 docudis-core 和 docudis-ner 原生库是 Apache-2.0。设置页的「开源许可」列出 App 所用第三方软件的许可证，由 `tool/generate_licenses.py` 生成。
+[GNU AGPL-3.0](LICENSE)，版权归 Pengda Xia（stonetech）所有，见 [NOTICE](NOTICE)。打包进 App 的 docudis-core 和 docudis-ner 原生库是 Apache-2.0。设置页的「开源许可」列出 App 所用第三方软件的许可证，由 `tool/generate_licenses.py` 生成。
+
+在公司里使用：员工在本公司的电脑上使用 Docudis、不做修改，不承担任何 AGPL 义务；只有把 Docudis 分发给别人，或者修改后通过网络提供给别人使用时，才需要按 AGPL 提供源代码。给 IT、DPO 和法务看的说明（数据存放、不联网、RGPD、许可证）见 [docs/entreprise.md](docs/entreprise.md)（法语）。
+
+## 安全
+
+发现安全问题请私下报告，不要开公开 issue，见 [SECURITY.md](SECURITY.md)。
 
 ## 参与
 
